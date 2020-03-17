@@ -5,6 +5,7 @@ import Logo from "./components/Logo/Logo";
 import Rank from "./components/Rank/Rank";
 import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
 import FaceRecognition from "./components/FaceRecognition/FaceRecognition.js";
+import SignIn from "./components/SignIn/SignIn";
 import Particles from "react-particles-js";
 import Clarifai from "clarifai";
 
@@ -129,7 +130,8 @@ class App extends Component {
     this.state = {
       input: "",
       imageUrl: "",
-      box: [{}]
+      box: [{}],
+      route: "signin"
     };
   }
 
@@ -159,7 +161,7 @@ class App extends Component {
     this.setState({ input: event.target.value });
   };
 
-  onSubmit = () => {
+  onSubmit = route => {
     // setState is an asynchronous function
     this.setState({ imageUrl: this.state.input });
     app.models
@@ -169,18 +171,31 @@ class App extends Component {
       .catch(err => console.log(err));
   };
 
+  onRouteChange = route => {
+    this.setState({ route });
+  };
+
   render() {
     return (
       <div className="App">
         <Particles className="particles" params={particleOptions} />
-        <Navigation />
-        <Logo />
-        <Rank />
-        <ImageLinkForm
-          onInputChange={this.onInputChange}
-          onSubmit={this.onSubmit}
-        />
-        <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl} />
+        <Navigation onRouteChange={this.onRouteChange} />
+        {this.state.route === "signin" ? (
+          <SignIn onRouteChange={this.onRouteChange} />
+        ) : (
+          <div>
+            <Logo />
+            <Rank />
+            <ImageLinkForm
+              onInputChange={this.onInputChange}
+              onSubmit={this.onSubmit}
+            />
+            <FaceRecognition
+              box={this.state.box}
+              imageUrl={this.state.imageUrl}
+            />
+          </div>
+        )}
       </div>
     );
   }
