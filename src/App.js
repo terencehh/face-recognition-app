@@ -137,6 +137,7 @@ class App extends Component {
   };
 
   onSubmit = () => {
+    // setState is an asynchronous function
     this.setState({ imageUrl: this.state.input });
     app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input).then(
       function(response) {
