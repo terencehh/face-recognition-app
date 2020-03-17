@@ -1,0 +1,16 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat:500&display=swap");
+
+body {
+  margin: 0;
+  font-family: "Montserrat", "Courier New", Courier, monospace;
+  background: linear-gradient(89deg, #8e54e9 0%, #4776e6 100%);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+button {
+  cursor: pointer;
+}
