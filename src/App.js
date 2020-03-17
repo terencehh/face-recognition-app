@@ -138,22 +138,18 @@ class App extends Component {
 
   onSubmit = () => {
     this.setState({ imageUrl: this.state.input });
-    console.log("click");
-    app.models
-      .predict(
-        Clarifai.FACE_DETECT_MODEL,
-        "https://samples.clarifai.com/face-det.jpg"
-      )
-      .then(
-        function(response) {
-          // do something with response
-          console.log(response);
-        },
-        function(err) {
-          console.log(err);
-          // there was an error
-        }
-      );
+    app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input).then(
+      function(response) {
+        // do something with response
+        console.log(
+          response.outputs[0].data.regions[0].region_info.bounding_box
+        );
+      },
+      function(err) {
+        console.log(err);
+        // there was an error
+      }
+    );
   };
 
   render() {
