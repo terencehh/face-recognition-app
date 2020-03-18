@@ -17,7 +17,7 @@ const ImageLinkForm = ({ onInputChange, onSubmit }) => {
             onChange={onInputChange}
           />
           <button
-            className="w-30 f4 link hover-near-black ph3 pv2 dib white"
+            className="w-30 f4 link hover-near-white ph3 pv2 dib"
             onClick={onSubmit}
           >
             Detect
