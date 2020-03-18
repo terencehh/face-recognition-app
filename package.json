@@ -15,6 +15,7 @@
     "react-tilt": "^0.1.4",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0",
     "tachyons": "^4.11.1"
   },
   "scripts": {
