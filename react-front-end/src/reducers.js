@@ -1,7 +1,8 @@
 import {
   URL_CHANGED,
   ROUTE_CHANGED,
-  SIGNING_IN,
+  SIGN_IN_SUCCESS,
+  SIGN_IN_FAILED,
   SIGN_IN_EMAIL_CHANGED,
   SIGN_IN_PASSWORD_CHANGED,
   CALCULATING_FACES_PENDING,
@@ -14,14 +15,8 @@ const initialSignInDetails = {
   signInPassword: ""
 };
 
-// SIGNING_IN SHOULD MAKE A CHANGE TO ROUTER ONCE AUTHENTICATED
 export const signInDetails = (state = initialSignInDetails, action = {}) => {
   switch (action.type) {
-    case SIGNING_IN:
-      return Object.assign({}, state, {
-        signInEmail: action.payload.email,
-        signInPassword: action.payload.pass
-      });
     case SIGN_IN_EMAIL_CHANGED:
       return Object.assign({}, state, {
         signInEmail: action.payload
@@ -37,7 +32,8 @@ export const signInDetails = (state = initialSignInDetails, action = {}) => {
 
 const initialRoute = {
   route: "signin",
-  isSignedIn: false
+  isSignedIn: false,
+  signInFailed: false
 };
 
 export const router = (state = initialRoute, action = {}) => {
@@ -48,6 +44,17 @@ export const router = (state = initialRoute, action = {}) => {
       return Object.assign({}, state, {
         route: action.payload,
         isSignedIn: signInCheck
+      });
+
+    case SIGN_IN_SUCCESS:
+      return Object.assign({}, state, {
+        isSignedIn: true,
+        route: action.payload
+      });
+
+    case SIGN_IN_FAILED:
+      return Object.assign({}, state, {
+        signInFailed: true
       });
 
     default:

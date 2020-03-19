@@ -4,7 +4,8 @@ import {
   CALCULATING_FACES_SUCCESS,
   CALCULATING_FACES_FAILED,
   ROUTE_CHANGED,
-  SIGNING_IN,
+  SIGN_IN_SUCCESS,
+  SIGN_IN_FAILED,
   SIGN_IN_EMAIL_CHANGED,
   SIGN_IN_PASSWORD_CHANGED
 } from "./constants.js";
@@ -19,10 +20,30 @@ export const setNewRoute = route => ({
   payload: route
 });
 
-export const onSignInSubmit = (email, pass) => ({
-  type: SIGNING_IN,
-  payload: { email, pass }
-});
+// POST Request to Sign In
+// this function returns a function due to fetch call, so we dispatch
+// once done the status of sign in
+export const onSignInSubmit = (email, password) => dispatch => {
+  fetch("http://localhost:3001/signin", {
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password })
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data === "Successfully Signed In") {
+        dispatch({ type: SIGN_IN_SUCCESS, payload: "home" });
+      } else {
+        dispatch({ type: SIGN_IN_FAILED, payload: "signin" });
+      }
+    });
+
+  // .then(response => response.json())
+  // .then(data => ({
+  //   type: SIGNING_IN,
+  //   payload: data === "Successfully Signed In"
+  // }));
+};
 
 export const setSignInEmail = email => ({
   type: SIGN_IN_EMAIL_CHANGED,

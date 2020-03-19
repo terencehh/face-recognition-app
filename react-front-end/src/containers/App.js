@@ -132,6 +132,7 @@ const particleOptions = {
 const mapStateToProps = state => {
   return {
     isSignedIn: state.router.isSignedIn,
+    signInFailed: state.router.signInFailed,
     imageUrl: state.urlField.imageUrl,
     route: state.router.route,
     box: state.faceBoxes.box,
@@ -159,7 +160,8 @@ const mapDispatchToProps = dispatch => {
     onSignInPasswordChange: event =>
       dispatch(setSignInPassword(event.target.value)),
 
-    onSignInSubmit: (email, pass) => dispatch(onSignInSubmit(email, pass))
+    onSignInSubmit: (email, password) =>
+      dispatch(onSignInSubmit(email, password))
   };
 };
 
@@ -167,6 +169,7 @@ class App extends Component {
   render() {
     const {
       isSignedIn,
+      signInFailed,
       imageUrl,
       route,
       box,
