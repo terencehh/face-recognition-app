@@ -3,6 +3,7 @@ import {
   ROUTE_CHANGED,
   SIGN_IN_SUCCESS,
   SIGN_IN_FAILED,
+  SIGN_IN_PENDING,
   SIGNING_OUT,
   SIGN_IN_EMAIL_CHANGED,
   SIGN_IN_PASSWORD_CHANGED,
@@ -13,7 +14,8 @@ import {
   REGISTER_PASSWORD_CHANGED,
   CALCULATING_FACES_PENDING,
   CALCULATING_FACES_SUCCESS,
-  CALCULATING_FACES_FAILED
+  CALCULATING_FACES_FAILED,
+  UPDATE_ENTRIES
 } from "./constants.js";
 
 const initialRegister = {
@@ -66,7 +68,7 @@ const initialState = {
   isSignedIn: false,
   signInFailed: false,
   registerFailed: false,
-  user: {
+  userProfile: {
     id: "",
     name: "",
     email: "",
@@ -86,20 +88,28 @@ export const userDefaults = (state = initialState, action = {}) => {
       return Object.assign({}, state, {
         route: action.payload,
         isSignedIn: false,
-        user: initialState.user
+        userProfile: initialState.user
+      });
+
+    case SIGN_IN_PENDING:
+      return Object.assign({}, state, {
+        userProfile: {
+          name: "loading...",
+          entries: "loading..."
+        }
       });
 
     case SIGN_IN_SUCCESS:
       return Object.assign({}, state, {
-        isSignedIn: true,
-        route: action.payload,
-        user: {
+        userProfile: {
           id: action.userData.id,
           name: action.userData.name,
           email: action.userData.email,
           entries: action.userData.entries,
           joined: action.userData.joined
-        }
+        },
+        isSignedIn: true,
+        route: action.payload
       });
 
     case SIGN_IN_FAILED:
@@ -111,7 +121,7 @@ export const userDefaults = (state = initialState, action = {}) => {
       return Object.assign({}, state, {
         isSignedIn: true,
         route: action.payload,
-        user: {
+        userProfile: {
           id: action.userData.id,
           name: action.userData.name,
           email: action.userData.email,
@@ -123,6 +133,15 @@ export const userDefaults = (state = initialState, action = {}) => {
     case REGISTER_FAILED:
       return Object.assign({}, state, {
         registerFailed: true
+      });
+
+    case UPDATE_ENTRIES:
+      // make sure we dont overwrite existing userProfile object
+      return Object.assign({}, state, {
+        userProfile: {
+          ...state.userProfile,
+          entries: action.payload
+        }
       });
 
     default:

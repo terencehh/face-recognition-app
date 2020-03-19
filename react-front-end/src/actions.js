@@ -7,13 +7,15 @@ import {
   SIGNING_OUT,
   SIGN_IN_SUCCESS,
   SIGN_IN_FAILED,
+  SIGN_IN_PENDING,
   REGISTER_SUCCESS,
   REGISTER_FAILED,
   SIGN_IN_EMAIL_CHANGED,
   SIGN_IN_PASSWORD_CHANGED,
   REGISTER_NAME_CHANGED,
   REGISTER_EMAIL_CHANGED,
-  REGISTER_PASSWORD_CHANGED
+  REGISTER_PASSWORD_CHANGED,
+  UPDATE_ENTRIES
 } from "./constants.js";
 import Clarifai from "clarifai";
 
@@ -33,6 +35,8 @@ export const setNewRoute = route => dispatch => {
 // this function returns a function due to fetch call, so we dispatch
 // once done the status of sign in
 export const signInSubmit = (email, password) => dispatch => {
+  dispatch({ type: SIGN_IN_PENDING });
+
   fetch("http://localhost:3001/signin", {
     method: "post",
     headers: { "Content-Type": "application/json" },
@@ -98,13 +102,29 @@ export const setUrlField = url => ({
   payload: url
 });
 
-export const generateFaces = url => dispatch => {
+export const generateFaces = (url, id) => dispatch => {
   // Clarifai API is working now
   dispatch({ type: CALCULATING_FACES_PENDING });
 
   app.models
     .predict(Clarifai.FACE_DETECT_MODEL, url)
-    .then(response => constructFaceBox(response))
+    // response successful increment entries
+    .then(response => {
+      // if successful there is an output response
+      if (response) {
+        fetch("http://localhost:3001/image", {
+          method: "put",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id
+          })
+        })
+          .then(response => response.json())
+          .then(count => dispatch({ type: UPDATE_ENTRIES, payload: count }));
+      }
+      return response;
+    })
+    .then(imageData => constructFaceBox(imageData))
     .then(boxData =>
       dispatch({ type: CALCULATING_FACES_SUCCESS, payload: boxData })
     )

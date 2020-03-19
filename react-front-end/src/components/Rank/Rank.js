@@ -1,13 +1,13 @@
 import React from "react";
-// import "./Rank.css";
 
-const Rank = () => {
+const EntryCount = ({ name, entries }) => {
   return (
     <div>
-      <div className="f3">{"Terence, your current rank is..."}</div>
-      <div className="f1">{"5"}</div>
+      <div className="f3">{`${name}, your current entry count
+       is...`}</div>
+      <div className="f1">{entries}</div>
     </div>
   );
 };
 
-export default Rank;
+export default EntryCount;

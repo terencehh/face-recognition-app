@@ -135,18 +135,27 @@ const particleOptions = {
 
 const mapStateToProps = state => {
   return {
+    // default user state
+    route: state.userDefaults.route,
     isSignedIn: state.userDefaults.isSignedIn,
     signInFailed: state.userDefaults.signInFailed,
     registerFailed: state.userDefaults.registerFailed,
+    userProfile: state.userDefaults.userProfile,
+
+    // url field state
     imageUrl: state.urlField.imageUrl,
-    route: state.userDefaults.route,
-    user: state.userDefaults.user,
-    box: state.faceBoxes.box,
     input: state.urlField.input,
+
+    // faceBox state
+    box: state.faceBoxes.box,
     isPending: state.faceBoxes.isPending,
     error: state.faceBoxes.error,
+
+    // sign in state
     signInEmail: state.signIn.email,
     signInPassword: state.signIn.password,
+
+    // register state
     registerName: state.register.name,
     registerEmail: state.register.email,
     registerPass: state.register.password
@@ -159,7 +168,7 @@ const mapDispatchToProps = dispatch => {
     // input change for image URL
     onInputChange: event => dispatch(setUrlField(event.target.value)),
     // submit for face detection
-    onSubmit: url => dispatch(generateFaces(url)),
+    onPictureSubmit: (url, id) => dispatch(generateFaces(url, id)),
     // detect when route changes
     onRouteChange: route => dispatch(setNewRoute(route)),
 
@@ -188,28 +197,34 @@ const mapDispatchToProps = dispatch => {
 class App extends Component {
   render() {
     const {
-      isSignedIn,
-
-      // use this prop to display an error message if sign in or register fails
-      signInFailed,
-      registerFailed,
-
-      imageUrl,
+      // userDefaults info
       route,
-      box,
-      input,
-      isPending,
-      error,
-      signInEmail,
-      signInPassword,
+      isSignedIn,
+      signInFailed, // display error message when sign in failed
+      registerFailed, // display error message when register failed
+      userProfile,
 
+      // register info
       registerName,
       registerEmail,
       registerPass,
 
+      // sign in info
+      signInEmail,
+      signInPassword,
+
+      // image url info
+      imageUrl,
+      input,
+
+      //face detection image box info
+      box,
+      isPending, // use to display loading bar when loading
+      error, // use to display error message when API call failed
+
       //dispatch functions
       onInputChange,
-      onSubmit,
+      onPictureSubmit,
       onRouteChange,
       onSignInEmailChange,
       onSignInPasswordChange,
@@ -228,11 +243,12 @@ class App extends Component {
         {route === "home" ? (
           <div>
             <Logo />
-            <Rank />
+            <Rank name={userProfile.name} entries={userProfile.entries} />
             <ImageLinkForm
               onInputChange={onInputChange}
-              onSubmit={onSubmit}
+              onPictureSubmit={onPictureSubmit}
               imageUrl={imageUrl}
+              id={userProfile.id}
             />
             <FaceRecognition
               box={box}

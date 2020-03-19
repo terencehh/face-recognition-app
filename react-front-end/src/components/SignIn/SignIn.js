@@ -1,13 +1,4 @@
 import React from "react";
-// import "./Rank.css";
-
-// Use onSignIn by passing user email + password data as a JSON object
-// with .email and .password
-
-//           onClick={() => onRouteChange("signin")}
-
-// onChange={onInputChange}
-// onClick={() => onSubmit(imageUrl)}
 
 const SignIn = ({
   email,
