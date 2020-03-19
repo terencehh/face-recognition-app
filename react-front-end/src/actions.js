@@ -3,7 +3,10 @@ import {
   CALCULATING_FACES_PENDING,
   CALCULATING_FACES_SUCCESS,
   CALCULATING_FACES_FAILED,
-  ROUTE_CHANGED
+  ROUTE_CHANGED,
+  SIGNING_IN,
+  SIGN_IN_EMAIL_CHANGED,
+  SIGN_IN_PASSWORD_CHANGED
 } from "./constants.js";
 import Clarifai from "clarifai";
 
@@ -14,6 +17,22 @@ const app = new Clarifai.App({
 export const setNewRoute = route => ({
   type: ROUTE_CHANGED,
   payload: route
+});
+
+export const onSignInSubmit = signData => ({
+  type: SIGNING_IN,
+  payload_email: signData.email,
+  payload_password: signData.password,
+});
+
+export const setSignInEmail = email => ({
+  type: SIGN_IN_EMAIL_CHANGED,
+  payload: email
+});
+
+export const setSignInPassword = password => ({
+  type: SIGN_IN_PASSWORD_CHANGED,
+  payload: password
 });
 
 export const setUrlField = url => ({

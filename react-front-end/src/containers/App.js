@@ -9,7 +9,14 @@ import SignIn from "../components/SignIn/SignIn";
 import Register from "../components/Register/Register";
 import Particles from "react-particles-js";
 import { connect } from "react-redux";
-import { setUrlField, setNewRoute, generateFaces } from "../actions";
+import {
+  setUrlField,
+  setNewRoute,
+  generateFaces,
+  onSignInSubmit,
+  setSignInEmail,
+  setSignInPassword
+} from "../actions";
 
 const particleOptions = {
   particles: {
@@ -124,22 +131,35 @@ const particleOptions = {
 
 const mapStateToProps = state => {
   return {
-    route: state.router.route,
     isSignedIn: state.router.isSignedIn,
-    input: state.urlField.input,
     imageUrl: state.urlField.imageUrl,
+    route: state.router.route,
     box: state.faceBoxes.box,
+    input: state.urlField.input,
     isPending: state.faceBoxes.isPending,
-    error: state.faceBoxes.error
+    error: state.faceBoxes.error,
+    signInEmail: state.signInDetails.signInEmail,
+    signInPassword: state.signInDetails.signInPassword
   };
 };
 
 // dispatch is what triggers the action
 const mapDispatchToProps = dispatch => {
   return {
+    // input change for image URL
     onInputChange: event => dispatch(setUrlField(event.target.value)),
+    // submit for face detection
     onSubmit: url => dispatch(generateFaces(url)),
-    onRouteChange: route => dispatch(setNewRoute(route))
+    // detect when route changes
+    onRouteChange: route => dispatch(setNewRoute(route)),
+
+    // input changes for Sign In Component
+    onSignInEmailChange: event => dispatch(setSignInEmail(event.target.value)),
+
+    onSignInPasswordChange: event =>
+      dispatch(setSignInPassword(event.target.value)),
+
+    onSignInSubmit: signData => dispatch(onSignInSubmit(signData))
   };
 };
 
@@ -150,9 +170,19 @@ class App extends Component {
       imageUrl,
       route,
       box,
-      onRouteChange,
+      input,
+      isPending,
+      error,
+      signInEmail,
+      signInPassword,
+
+      //dispatch functions
       onInputChange,
-      onSubmit
+      onSubmit,
+      onRouteChange,
+      onSignInEmailChange,
+      onSignInPasswordChange,
+      onSignInSubmit
     } = this.props;
 
     return (
@@ -169,10 +199,23 @@ class App extends Component {
               onSubmit={onSubmit}
               imageUrl={imageUrl}
             />
-            <FaceRecognition box={box} imageUrl={imageUrl} />
+            <FaceRecognition
+              box={box}
+              imageUrl={imageUrl}
+              input={input}
+              isPending={isPending}
+              error={error}
+            />
           </div>
         ) : route === "signin" ? (
-          <SignIn onRouteChange={onRouteChange} />
+          <SignIn
+            onRouteChange={onRouteChange}
+            onSignInSubmit={onSignInSubmit}
+            onSignInEmailChange={onSignInEmailChange}
+            onSignInPasswordChange={onSignInPasswordChange}
+            signInEmail={signInEmail}
+            signInPassword={signInPassword}
+          />
         ) : (
           <Register onRouteChange={onRouteChange} />
         )}
