@@ -13,9 +13,13 @@ import {
   setUrlField,
   setNewRoute,
   generateFaces,
-  onSignInSubmit,
+  signInSubmit,
   setSignInEmail,
-  setSignInPassword
+  setSignInPassword,
+  registerSubmit,
+  setRegisterEmail,
+  setRegisterName,
+  setRegisterPassword
 } from "../actions";
 
 const particleOptions = {
@@ -131,16 +135,21 @@ const particleOptions = {
 
 const mapStateToProps = state => {
   return {
-    isSignedIn: state.router.isSignedIn,
-    signInFailed: state.router.signInFailed,
+    isSignedIn: state.userDefaults.isSignedIn,
+    signInFailed: state.userDefaults.signInFailed,
+    registerFailed: state.userDefaults.registerFailed,
     imageUrl: state.urlField.imageUrl,
-    route: state.router.route,
+    route: state.userDefaults.route,
+    user: state.userDefaults.user,
     box: state.faceBoxes.box,
     input: state.urlField.input,
     isPending: state.faceBoxes.isPending,
     error: state.faceBoxes.error,
-    signInEmail: state.signInDetails.signInEmail,
-    signInPassword: state.signInDetails.signInPassword
+    signInEmail: state.signIn.email,
+    signInPassword: state.signIn.password,
+    registerName: state.register.name,
+    registerEmail: state.register.email,
+    registerPass: state.register.password
   };
 };
 
@@ -154,14 +163,25 @@ const mapDispatchToProps = dispatch => {
     // detect when route changes
     onRouteChange: route => dispatch(setNewRoute(route)),
 
-    // input changes for Sign In Component
+    // SIGN IN SECTION
     onSignInEmailChange: event => dispatch(setSignInEmail(event.target.value)),
 
     onSignInPasswordChange: event =>
       dispatch(setSignInPassword(event.target.value)),
 
     onSignInSubmit: (email, password) =>
-      dispatch(onSignInSubmit(email, password))
+      dispatch(signInSubmit(email, password)),
+
+    // REGISTER SECTION
+    onRegisterEmailChange: event =>
+      dispatch(setRegisterEmail(event.target.value)),
+    onRegisterNameChange: event =>
+      dispatch(setRegisterName(event.target.value)),
+    onRegisterPasswordChange: event =>
+      dispatch(setRegisterPassword(event.target.value)),
+
+    onRegisterSubmit: (name, email, password) =>
+      dispatch(registerSubmit(name, email, password))
   };
 };
 
@@ -169,7 +189,11 @@ class App extends Component {
   render() {
     const {
       isSignedIn,
+
+      // use this prop to display an error message if sign in or register fails
       signInFailed,
+      registerFailed,
+
       imageUrl,
       route,
       box,
@@ -179,13 +203,21 @@ class App extends Component {
       signInEmail,
       signInPassword,
 
+      registerName,
+      registerEmail,
+      registerPass,
+
       //dispatch functions
       onInputChange,
       onSubmit,
       onRouteChange,
       onSignInEmailChange,
       onSignInPasswordChange,
-      onSignInSubmit
+      onSignInSubmit,
+      onRegisterSubmit,
+      onRegisterNameChange,
+      onRegisterEmailChange,
+      onRegisterPasswordChange
     } = this.props;
 
     return (
@@ -212,15 +244,23 @@ class App extends Component {
           </div>
         ) : route === "signin" ? (
           <SignIn
+            email={signInEmail}
+            pass={signInPassword}
+            onEmailChange={onSignInEmailChange}
+            onPassChange={onSignInPasswordChange}
+            onSubmit={onSignInSubmit}
             onRouteChange={onRouteChange}
-            onSignInSubmit={onSignInSubmit}
-            onSignInEmailChange={onSignInEmailChange}
-            onSignInPasswordChange={onSignInPasswordChange}
-            signInEmail={signInEmail}
-            signInPassword={signInPassword}
           />
         ) : (
-          <Register onRouteChange={onRouteChange} />
+          <Register
+            name={registerName}
+            email={registerEmail}
+            pass={registerPass}
+            onNameChange={onRegisterNameChange}
+            onEmailChange={onRegisterEmailChange}
+            onPassChange={onRegisterPasswordChange}
+            onSubmit={onRegisterSubmit}
+          />
         )}
       </div>
     );

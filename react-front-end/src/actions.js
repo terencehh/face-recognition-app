@@ -4,10 +4,16 @@ import {
   CALCULATING_FACES_SUCCESS,
   CALCULATING_FACES_FAILED,
   ROUTE_CHANGED,
+  SIGNING_OUT,
   SIGN_IN_SUCCESS,
   SIGN_IN_FAILED,
+  REGISTER_SUCCESS,
+  REGISTER_FAILED,
   SIGN_IN_EMAIL_CHANGED,
-  SIGN_IN_PASSWORD_CHANGED
+  SIGN_IN_PASSWORD_CHANGED,
+  REGISTER_NAME_CHANGED,
+  REGISTER_EMAIL_CHANGED,
+  REGISTER_PASSWORD_CHANGED
 } from "./constants.js";
 import Clarifai from "clarifai";
 
@@ -15,34 +21,31 @@ const app = new Clarifai.App({
   apiKey: "5dc4f1f03f2740fbaffdbb786de801d4"
 });
 
-export const setNewRoute = route => ({
-  type: ROUTE_CHANGED,
-  payload: route
-});
+export const setNewRoute = route => dispatch => {
+  if (route === "signout") {
+    dispatch({ type: SIGNING_OUT, payload: "signin" });
+  } else {
+    dispatch({ type: ROUTE_CHANGED, payload: route });
+  }
+};
 
 // POST Request to Sign In
 // this function returns a function due to fetch call, so we dispatch
 // once done the status of sign in
-export const onSignInSubmit = (email, password) => dispatch => {
+export const signInSubmit = (email, password) => dispatch => {
   fetch("http://localhost:3001/signin", {
     method: "post",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password })
   })
     .then(res => res.json())
-    .then(data => {
-      if (data === "Successfully Signed In") {
-        dispatch({ type: SIGN_IN_SUCCESS, payload: "home" });
+    .then(user => {
+      if (user) {
+        dispatch({ type: SIGN_IN_SUCCESS, payload: "home", userData: user });
       } else {
         dispatch({ type: SIGN_IN_FAILED, payload: "signin" });
       }
     });
-
-  // .then(response => response.json())
-  // .then(data => ({
-  //   type: SIGNING_IN,
-  //   payload: data === "Successfully Signed In"
-  // }));
 };
 
 export const setSignInEmail = email => ({
@@ -53,6 +56,41 @@ export const setSignInEmail = email => ({
 export const setSignInPassword = password => ({
   type: SIGN_IN_PASSWORD_CHANGED,
   payload: password
+});
+
+// POST Request to Register
+// this function returns a function due to fetch call, so we dispatch
+// once done the status of sign in
+export const registerSubmit = (name, email, password) => dispatch => {
+  fetch("http://localhost:3001/register", {
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, email, password })
+  })
+    .then(res => res.json())
+    .then(user => {
+      if (user) {
+        // load User Data on Home Page
+        dispatch({ type: REGISTER_SUCCESS, payload: "home", userData: user });
+      } else {
+        dispatch({ type: REGISTER_FAILED, payload: "register" });
+      }
+    });
+};
+
+export const setRegisterEmail = email => ({
+  type: REGISTER_EMAIL_CHANGED,
+  payload: email
+});
+
+export const setRegisterPassword = password => ({
+  type: REGISTER_PASSWORD_CHANGED,
+  payload: password
+});
+
+export const setRegisterName = name => ({
+  type: REGISTER_NAME_CHANGED,
+  payload: name
 });
 
 export const setUrlField = url => ({

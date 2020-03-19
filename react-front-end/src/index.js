@@ -5,15 +5,22 @@ import App from "./containers/App";
 import "tachyons";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware, combineReducers } from "redux";
-import { router, urlField, faceBoxes, signInDetails } from "./reducers";
+import {
+  userDefaults,
+  urlField,
+  faceBoxes,
+  signIn,
+  register
+} from "./reducers";
 import { createLogger } from "redux-logger";
 import thunkMiddleware from "redux-thunk";
 
 const rootReducer = combineReducers({
-  router,
+  userDefaults,
   urlField,
   faceBoxes,
-  signInDetails
+  signIn,
+  register
 });
 
 const logger = createLogger();

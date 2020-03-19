@@ -10,12 +10,12 @@ import React from "react";
 // onClick={() => onSubmit(imageUrl)}
 
 const SignIn = ({
-  onRouteChange,
-  onSignInSubmit,
-  onSignInEmailChange,
-  onSignInPasswordChange,
-  signInEmail,
-  signInPassword
+  email,
+  pass,
+  onEmailChange,
+  onPassChange,
+  onSubmit,
+  onRouteChange
 }) => {
   return (
     <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
@@ -32,7 +32,7 @@ const SignIn = ({
                 type="email"
                 name="email-address"
                 id="email-address"
-                onChange={onSignInEmailChange}
+                onChange={onEmailChange}
               />
             </div>
             <div className="mv3">
@@ -44,7 +44,7 @@ const SignIn = ({
                 type="password"
                 name="password"
                 id="password"
-                onChange={onSignInPasswordChange}
+                onChange={onPassChange}
               />
             </div>
           </fieldset>
@@ -54,7 +54,7 @@ const SignIn = ({
               type="submit"
               value="Submit"
               // Also Routes to Home Page if Successful
-              onClick={() => onSignInSubmit(signInEmail, signInPassword)}
+              onClick={() => onSubmit(email, pass)}
             />
           </div>
           <div className="lh-copy mt3">

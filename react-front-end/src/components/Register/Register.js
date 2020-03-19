@@ -1,7 +1,13 @@
 import React from "react";
-// import "./Rank.css";
-
-const Register = ({ onRouteChange }) => {
+const Register = ({
+  name,
+  email,
+  pass,
+  onNameChange,
+  onEmailChange,
+  onPassChange,
+  onSubmit
+}) => {
   return (
     <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
       <main className="pa4 black-80">
@@ -17,6 +23,7 @@ const Register = ({ onRouteChange }) => {
                 type="text"
                 name="name"
                 id="name"
+                onChange={onNameChange}
               />
             </div>
             <div className="mt3">
@@ -28,6 +35,7 @@ const Register = ({ onRouteChange }) => {
                 type="email"
                 name="email-address"
                 id="email-address"
+                onChange={onEmailChange}
               />
             </div>
             <div className="mv3">
@@ -39,6 +47,7 @@ const Register = ({ onRouteChange }) => {
                 type="password"
                 name="password"
                 id="password"
+                onChange={onPassChange}
               />
             </div>
           </fieldset>
@@ -47,7 +56,7 @@ const Register = ({ onRouteChange }) => {
               className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
               type="submit"
               value="Register"
-              onClick={() => onRouteChange("home")}
+              onClick={() => onSubmit(name, email, pass)}
             />
           </div>
         </div>
