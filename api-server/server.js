@@ -2,10 +2,14 @@
 const express = require("express");
 // bcrypt for hashing passwords
 const bcrypt = require("bcrypt-nodejs");
+const cors = require("cors");
 const app = express();
 app.use(express.json());
+// allow cross origin resource sharing
+app.use(cors());
 
 // Database of users
+// NOTE: Will use bcrypt to hash passwords later once we implement database system via Mongo
 const database = {
   users: [
     {
@@ -57,10 +61,6 @@ app.post("/register", (req, res) => {
   const { email, password, name } = req.body;
 
   // hash the password for security
-  bcrypt.hash(password, null, null, (err, hash) => {
-    console.log(hash);
-  });
-
   database.users.push({
     id: "3",
     name: name,
@@ -104,6 +104,6 @@ app.post("/image", (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log("Server Successfully Started on Port 3000");
+app.listen(3001, () => {
+  console.log("Server Successfully Started on Port 3001");
 });
