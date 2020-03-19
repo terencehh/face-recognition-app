@@ -11,19 +11,16 @@ import {
 
 const initialSignInDetails = {
   signInEmail: "",
-  signInPassword: "",
-  route: "signin",
-  isSignedIn: false
+  signInPassword: ""
 };
 
+// SIGNING_IN SHOULD MAKE A CHANGE TO ROUTER ONCE AUTHENTICATED
 export const signInDetails = (state = initialSignInDetails, action = {}) => {
   switch (action.type) {
     case SIGNING_IN:
       return Object.assign({}, state, {
-        signInEmail: action.payload_email,
-        signInPassword: action.payload_password,
-        route: "home",
-        isSignedIn: true
+        signInEmail: action.payload.email,
+        signInPassword: action.payload.pass
       });
     case SIGN_IN_EMAIL_CHANGED:
       return Object.assign({}, state, {

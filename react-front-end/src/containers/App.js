@@ -159,7 +159,7 @@ const mapDispatchToProps = dispatch => {
     onSignInPasswordChange: event =>
       dispatch(setSignInPassword(event.target.value)),
 
-    onSignInSubmit: signData => dispatch(onSignInSubmit(signData))
+    onSignInSubmit: (email, pass) => dispatch(onSignInSubmit(email, pass))
   };
 };
 

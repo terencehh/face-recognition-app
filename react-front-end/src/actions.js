@@ -19,10 +19,9 @@ export const setNewRoute = route => ({
   payload: route
 });
 
-export const onSignInSubmit = signData => ({
+export const onSignInSubmit = (email, pass) => ({
   type: SIGNING_IN,
-  payload_email: signData.email,
-  payload_password: signData.password,
+  payload: { email, pass }
 });
 
 export const setSignInEmail = email => ({

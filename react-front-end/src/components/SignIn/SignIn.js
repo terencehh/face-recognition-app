@@ -53,12 +53,7 @@ const SignIn = ({
               className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
               type="submit"
               value="Submit"
-              onClick={() =>
-                onSignInSubmit({
-                  payload_email: { signInEmail },
-                  payload_password: { signInPassword }
-                })
-              }
+              onClick={() => onSignInSubmit(signInEmail, signInPassword)}
               // onClick={() => onRouteChange("home")}
             />
           </div>
