@@ -44,10 +44,10 @@ export const signInSubmit = (email, password) => dispatch => {
   })
     .then(res => res.json())
     .then(user => {
-      if (user) {
-        dispatch({ type: SIGN_IN_SUCCESS, payload: "home", userData: user });
-      } else {
+      if (user === "Error logging in.") {
         dispatch({ type: SIGN_IN_FAILED, payload: "signin" });
+      } else {
+        dispatch({ type: SIGN_IN_SUCCESS, payload: "home", userData: user });
       }
     });
 };
