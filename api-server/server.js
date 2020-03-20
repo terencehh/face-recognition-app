@@ -37,6 +37,9 @@ app.get("/profile/:id", profile.handleProfileGet(db));
 //image --> PUT --> user (with updated count)
 app.put("/image", image.handleImagePut(db));
 
+//API call to Clarifai
+app.post("/imageurl", image.handleApiCall());
+
 app.listen(3001, () => {
   console.log("Server Successfully Started on Port 3001");
 });
