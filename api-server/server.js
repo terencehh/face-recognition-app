@@ -15,12 +15,6 @@ const db = knex({
   }
 });
 
-// db.select("*")
-//   .from("user")
-//   .then(data => {
-//     console.log(data);
-//   });
-
 const app = express();
 app.use(express.json());
 // allow cross origin resource sharing
