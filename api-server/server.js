@@ -1,5 +1,6 @@
 // Express.js for server-side routing
 const express = require("express");
+const PORT = process.env.PORT;
 // bcrypt for hashing passwords
 const bcrypt = require("bcrypt-nodejs");
 const cors = require("cors");
@@ -40,6 +41,6 @@ app.put("/image", image.handleImagePut(db));
 //API call to Clarifai
 app.post("/imageurl", image.handleApiCall());
 
-app.listen(3001, () => {
-  console.log("Server Successfully Started on Port 3001");
+app.listen(PORT, () => {
+  console.log(`Server Successfully Started on Port ${PORT}`);
 });
