@@ -2,11 +2,11 @@
 
 > Full Stack App developed using React.js, Node.js, Express.js & PostgreSQL as Back-End. This app identifies & detects faces in any image supplied.
 
-## Install
+## Instructions
 
 > The App is split into two directories, the React Front-End, and Server Back-End. To simulate a client-server environment, run npm install and npm start in each directories respectively.
 
-## Instructions
+## Install
 
 ```sh
 npm install
