@@ -20,11 +20,6 @@ import {
   RESET_URL,
   RESET_FACE_BOXES
 } from "./constants.js";
-import Clarifai from "clarifai";
-
-const app = new Clarifai.App({
-  apiKey: "5dc4f1f03f2740fbaffdbb786de801d4"
-});
 
 export const setNewRoute = route => dispatch => {
   if (route === "signout") {
@@ -110,8 +105,15 @@ export const generateFaces = (url, id) => dispatch => {
   // first set the image component + run Clarifai API
   dispatch({ type: CALCULATING_FACES_PENDING, payload: url });
 
-  app.models
-    .predict(Clarifai.FACE_DETECT_MODEL, url)
+  // api call to clarifai
+  fetch("http://localhost:3001/imageurl", {
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      url
+    })
+  })
+    .then(response => response.json())
     // response successful increment entries
     .then(response => {
       // if successful there is an output response

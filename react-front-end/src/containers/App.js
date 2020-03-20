@@ -235,6 +235,8 @@ class App extends Component {
       onRegisterPasswordChange
     } = this.props;
 
+    // TODO: INPUT VALIDATION for SIGNIN & REGISTER
+    // TODO: ERROR DISPLAY WHEN SIGNIN & REGISTER FAILS
     return (
       <div className="App">
         <Particles className="particles" params={particleOptions} />
@@ -250,14 +252,14 @@ class App extends Component {
               imageUrl={imageUrl}
               id={userProfile.id}
             />
-
-            {/* FIXES: only update imageURL when the user clicks Submit, rather than updating image constantly */}
-            <FaceRecognition
-              box={box}
-              submittedUrl={submittedUrl}
-              isPending={isPending}
-              error={error}
-            />
+            <div>
+              <FaceRecognition
+                box={box}
+                submittedUrl={submittedUrl}
+                isPending={isPending}
+                error={error}
+              />
+            </div>
           </div>
         ) : route === "signin" ? (
           <SignIn
