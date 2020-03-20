@@ -26,36 +26,6 @@ app.use(express.json());
 // allow cross origin resource sharing
 app.use(cors());
 
-// Database of users
-// NOTE: Will use bcrypt to hash passwords later once we implement database system via Mongo
-const database = {
-  users: [
-    {
-      id: "1",
-      name: "John",
-      email: "john@gmail.com",
-      password: "cookies",
-      entries: 0,
-      joined: new Date()
-    },
-    {
-      id: "2",
-      name: "Sally",
-      email: "sally@gmail.com",
-      password: "bananas",
-      entries: 0,
-      joined: new Date()
-    }
-  ],
-  login: [
-    {
-      id: "987",
-      hash: "",
-      email: "john@gmail.com"
-    }
-  ]
-};
-
 // --> Root Route
 app.get("/", (req, res) => {
   res.send(database.users);
