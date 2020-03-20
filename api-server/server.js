@@ -3,6 +3,24 @@ const express = require("express");
 // bcrypt for hashing passwords
 const bcrypt = require("bcrypt-nodejs");
 const cors = require("cors");
+const knex = require("knex");
+
+const db = knex({
+  client: "pg",
+  connection: {
+    host: "localhost",
+    user: "ngter",
+    password: "021358",
+    database: "facerecognitionapp"
+  }
+});
+
+// db.select("*")
+//   .from("user")
+//   .then(data => {
+//     console.log(data);
+//   });
+
 const app = express();
 app.use(express.json());
 // allow cross origin resource sharing
@@ -61,15 +79,17 @@ app.post("/register", (req, res) => {
   const { email, password, name } = req.body;
 
   // hash the password for security
-  database.users.push({
-    id: "3",
-    name: name,
-    email: email,
-    password: password,
-    entries: 0,
-    joined: new Date()
-  });
-  res.json(database.users[database.users.length - 1]);
+  db("user")
+    .returning("*")
+    .insert({
+      email,
+      name,
+      joined: new Date()
+    })
+    .then(user => {
+      res.json(user[0]);
+    })
+    .catch(err => res.status(400).json("Unable to Register."));
 });
 
 //profile/:userId --> GET Request --> {user}
