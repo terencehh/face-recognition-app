@@ -4,6 +4,10 @@
 
 ## Install
 
+> The App is split into two directories, the React Front-End, and Server Back-End. To simulate a client-server environment, run npm install and npm start in each directories respectively.
+
+## Instructions
+
 ```sh
 npm install
 ```
