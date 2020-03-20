@@ -64,14 +64,35 @@ app.get("/", (req, res) => {
 //signin --> POST Request --> Success/Fail
 app.post("/signin", (req, res) => {
   const { email, password } = req.body;
-  if (
-    email === database.users[0].email &&
-    password === database.users[0].password
-  ) {
-    res.json(database.users[0]);
-  } else {
-    res.status(400).json("Error logging in.");
-  }
+
+  // check email & password against database
+  db.select("email", "hash")
+    .from("login")
+    // first check email
+    .where("email", "=", email)
+    .then(userData => {
+      // check the password against its hashed value
+      const isValid = bcrypt.compareSync(password, userData[0].hash);
+      if (isValid) {
+        return db
+          .select("*")
+          .from("user")
+          .where("email", "=", email)
+          .then(user => res.json(user[0]))
+          .catch(err =>
+            res
+              .status(400)
+              .json(
+                "User Exists but currently unable to get user. Please try another time."
+              )
+          );
+      } else {
+        // Email exists but password is wrong
+        res.status(400).json("Wrong Credentials");
+      }
+    })
+    // Email entered does not Exist
+    .catch(err => res.status(400).json("Wrong Credentials."));
 });
 
 //register --> POST Request --> {user}
@@ -79,48 +100,62 @@ app.post("/register", (req, res) => {
   const { email, password, name } = req.body;
 
   // hash the password for security
-  db("user")
-    .returning("*")
-    .insert({
-      email,
-      name,
-      joined: new Date()
-    })
-    .then(user => {
-      res.json(user[0]);
-    })
-    .catch(err => res.status(400).json("Unable to Register."));
+  const hash = bcrypt.hashSync(password);
+
+  // transaction of inserting record to both login & email tables
+  db.transaction(trx => {
+    trx
+      .insert({
+        hash,
+        email
+      })
+      .into("login")
+      .returning("email")
+      .then(loginEmail => {
+        return trx("user")
+          .returning("*")
+          .insert({
+            email: loginEmail[0],
+            name,
+            joined: new Date()
+          })
+          .then(user => {
+            res.json(user[0]);
+          });
+      })
+      .then(trx.commit)
+      .catch(trx.rollback);
+  }).catch(err =>
+    res.status(400).json("Unable to Register. Email already exists.")
+  );
 });
 
 //profile/:userId --> GET Request --> {user}
 app.get("/profile/:id", (req, res) => {
   const { id } = req.params;
-  let found = false;
-  database.users.forEach(user => {
-    if (user.id === id) {
-      found = true;
-      return res.json(user);
-    }
-  });
-  if (!found) {
-    res.status(400).json("No such User");
-  }
+
+  db.select("*")
+    .from("user")
+    .where({ id })
+    .then(user => {
+      user.length
+        ? res.json(user[0])
+        : res.status(400).json("Error Getting User");
+    });
 });
 
 //image --> PUT --> user (with updated count)
 app.put("/image", (req, res) => {
   const { id } = req.body;
-  let found = false;
-  database.users.forEach(user => {
-    if (user.id === id) {
-      found = true;
-      user.entries++;
-      return res.json(user.entries);
-    }
-  });
-  if (!found) {
-    res.status(400).json("No such User");
-  }
+
+  db("user")
+    .where("id", "=", id)
+    .increment("entries", 1)
+    .returning("entries")
+    .then(entries => {
+      res.json(entries[0]);
+    })
+    .catch(err => res.status(400).json("Unable to get entries"));
 });
 
 app.listen(3001, () => {
