@@ -1,31 +1,43 @@
 import React from "react";
 import "./FaceRecognition.css";
 
-const FaceRecognition = ({ imageUrl, box, input, isPending, error }) => {
+// POSSIBLE: create a loading animation for isPending requests - however, as image loading time is relatively short, no need to do so for now.
+const FaceRecognition = ({ box, submittedUrl, isPending, error }) => {
   return (
     <div className="center ma">
       <div className="absolute mt2">
-        <img
-          id="inputImage"
-          alt=""
-          src={imageUrl}
-          width="500px"
-          height="auto"
-        />
-        {box.map((face, i) => {
-          return (
-            <div
-              key={i}
-              className="bounding-box"
-              style={{
-                top: face.topRow,
-                right: face.rightCol,
-                bottom: face.bottomRow,
-                left: face.leftCol
-              }}
-            ></div>
-          );
-        })}
+        {error.length === 0 ? (
+          <div>
+            <img
+              id="inputImage"
+              alt=""
+              src={submittedUrl}
+              width="500px"
+              height="auto"
+            />
+            {box.map((face, i) => {
+              return (
+                <div
+                  key={i}
+                  className="bounding-box"
+                  style={{
+                    top: face.topRow,
+                    right: face.rightCol,
+                    bottom: face.bottomRow,
+                    left: face.leftCol
+                  }}
+                ></div>
+              );
+            })}
+          </div>
+        ) : (
+          <div>
+            <p className="f4">
+              Error Generating Image. Please check that you have submitted a
+              valid image URL and try again.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

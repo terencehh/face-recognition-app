@@ -144,9 +144,9 @@ const mapStateToProps = state => {
 
     // url field state
     imageUrl: state.urlField.imageUrl,
-    input: state.urlField.input,
 
     // faceBox state
+    submittedUrl: state.faceBoxes.submittedUrl,
     box: state.faceBoxes.box,
     isPending: state.faceBoxes.isPending,
     error: state.faceBoxes.error,
@@ -215,9 +215,9 @@ class App extends Component {
 
       // image url info
       imageUrl,
-      input,
 
       //face detection image box info
+      submittedUrl,
       box,
       isPending, // use to display loading bar when loading
       error, // use to display error message when API call failed
@@ -250,10 +250,11 @@ class App extends Component {
               imageUrl={imageUrl}
               id={userProfile.id}
             />
+
+            {/* FIXES: only update imageURL when the user clicks Submit, rather than updating image constantly */}
             <FaceRecognition
               box={box}
-              imageUrl={imageUrl}
-              input={input}
+              submittedUrl={submittedUrl}
               isPending={isPending}
               error={error}
             />

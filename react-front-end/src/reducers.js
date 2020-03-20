@@ -3,19 +3,22 @@ import {
   ROUTE_CHANGED,
   SIGN_IN_SUCCESS,
   SIGN_IN_FAILED,
-  SIGN_IN_PENDING,
   SIGNING_OUT,
   SIGN_IN_EMAIL_CHANGED,
   SIGN_IN_PASSWORD_CHANGED,
+  CLEAR_SIGN_IN_FIELD,
   REGISTER_NAME_CHANGED,
   REGISTER_EMAIL_CHANGED,
+  CLEAR_REGISTER_FIELD,
   REGISTER_SUCCESS,
   REGISTER_FAILED,
   REGISTER_PASSWORD_CHANGED,
   CALCULATING_FACES_PENDING,
   CALCULATING_FACES_SUCCESS,
   CALCULATING_FACES_FAILED,
-  UPDATE_ENTRIES
+  UPDATE_ENTRIES,
+  RESET_URL,
+  RESET_FACE_BOXES
 } from "./constants.js";
 
 const initialRegister = {
@@ -38,6 +41,8 @@ export const register = (state = initialRegister, action = {}) => {
       return Object.assign({}, state, {
         password: action.payload
       });
+    case CLEAR_REGISTER_FIELD:
+      return Object.assign({}, state, initialRegister);
     default:
       return state;
   }
@@ -58,6 +63,8 @@ export const signIn = (state = initialSignIn, action = {}) => {
       return Object.assign({}, state, {
         password: action.payload
       });
+    case CLEAR_SIGN_IN_FIELD:
+      return Object.assign({}, state, initialSignIn);
     default:
       return state;
   }
@@ -66,15 +73,9 @@ export const signIn = (state = initialSignIn, action = {}) => {
 const initialState = {
   route: "signin",
   isSignedIn: false,
-  signInFailed: false,
-  registerFailed: false,
-  userProfile: {
-    id: "",
-    name: "",
-    email: "",
-    entries: 0,
-    joined: new Date()
-  }
+  signInFailed: "",
+  registerFailed: "",
+  userProfile: {}
 };
 
 export const userDefaults = (state = initialState, action = {}) => {
@@ -85,42 +86,34 @@ export const userDefaults = (state = initialState, action = {}) => {
       });
 
     case SIGNING_OUT:
-      return Object.assign({}, state, {
-        route: action.payload,
-        isSignedIn: false,
-        userProfile: initialState.user
-      });
-
-    case SIGN_IN_PENDING:
-      return Object.assign({}, state, {
-        userProfile: {
-          name: "loading...",
-          entries: "loading..."
-        }
-      });
+      return Object.assign({}, state, initialState);
 
     case SIGN_IN_SUCCESS:
       return Object.assign({}, state, {
+        signInFailed: "",
+        registerFailed: "",
+        isSignedIn: true,
+        route: action.payload,
         userProfile: {
           id: action.userData.id,
           name: action.userData.name,
           email: action.userData.email,
           entries: action.userData.entries,
           joined: action.userData.joined
-        },
-        isSignedIn: true,
-        route: action.payload
+        }
       });
 
     case SIGN_IN_FAILED:
       return Object.assign({}, state, {
-        signInFailed: true
+        signInFailed: action.payload
       });
 
     case REGISTER_SUCCESS:
       return Object.assign({}, state, {
         isSignedIn: true,
         route: action.payload,
+        signInFailed: "",
+        registerFailed: "",
         userProfile: {
           id: action.userData.id,
           name: action.userData.name,
@@ -132,7 +125,7 @@ export const userDefaults = (state = initialState, action = {}) => {
 
     case REGISTER_FAILED:
       return Object.assign({}, state, {
-        registerFailed: true
+        registerFailed: action.payload
       });
 
     case UPDATE_ENTRIES:
@@ -150,15 +143,16 @@ export const userDefaults = (state = initialState, action = {}) => {
 };
 
 const initialUrlField = {
-  input: "",
   imageUrl: ""
 };
 
 export const urlField = (state = initialUrlField, action = {}) => {
   switch (action.type) {
+    case RESET_URL:
+      return Object.assign({}, state, initialUrlField);
+
     case URL_CHANGED:
       return Object.assign({}, state, {
-        input: action.payload,
         imageUrl: action.payload
       });
 
@@ -168,6 +162,7 @@ export const urlField = (state = initialUrlField, action = {}) => {
 };
 
 const initialImageBox = {
+  submittedUrl: "",
   box: [{}],
   isPending: false,
   error: ""
@@ -175,8 +170,15 @@ const initialImageBox = {
 
 export const faceBoxes = (state = initialImageBox, action = {}) => {
   switch (action.type) {
+    case RESET_FACE_BOXES:
+      return Object.assign({}, state, initialImageBox);
+
     case CALCULATING_FACES_PENDING:
-      return Object.assign({}, state, { isPending: true });
+      return Object.assign({}, state, {
+        isPending: true,
+        submittedUrl: action.payload,
+        error: ""
+      });
 
     case CALCULATING_FACES_SUCCESS:
       return Object.assign({}, state, {
@@ -187,6 +189,7 @@ export const faceBoxes = (state = initialImageBox, action = {}) => {
     case CALCULATING_FACES_FAILED:
       return Object.assign({}, state, {
         error: action.payload,
+        box: [{}],
         isPending: false
       });
 

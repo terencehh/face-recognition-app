@@ -7,15 +7,18 @@ import {
   SIGNING_OUT,
   SIGN_IN_SUCCESS,
   SIGN_IN_FAILED,
-  SIGN_IN_PENDING,
   REGISTER_SUCCESS,
   REGISTER_FAILED,
   SIGN_IN_EMAIL_CHANGED,
   SIGN_IN_PASSWORD_CHANGED,
+  CLEAR_SIGN_IN_FIELD,
   REGISTER_NAME_CHANGED,
   REGISTER_EMAIL_CHANGED,
   REGISTER_PASSWORD_CHANGED,
-  UPDATE_ENTRIES
+  CLEAR_REGISTER_FIELD,
+  UPDATE_ENTRIES,
+  RESET_URL,
+  RESET_FACE_BOXES
 } from "./constants.js";
 import Clarifai from "clarifai";
 
@@ -25,7 +28,9 @@ const app = new Clarifai.App({
 
 export const setNewRoute = route => dispatch => {
   if (route === "signout") {
-    dispatch({ type: SIGNING_OUT, payload: "signin" });
+    dispatch({ type: SIGNING_OUT });
+    dispatch({ type: RESET_URL });
+    dispatch({ type: RESET_FACE_BOXES });
   } else {
     dispatch({ type: ROUTE_CHANGED, payload: route });
   }
@@ -35,8 +40,6 @@ export const setNewRoute = route => dispatch => {
 // this function returns a function due to fetch call, so we dispatch
 // once done the status of sign in
 export const signInSubmit = (email, password) => dispatch => {
-  dispatch({ type: SIGN_IN_PENDING });
-
   fetch("http://localhost:3001/signin", {
     method: "post",
     headers: { "Content-Type": "application/json" },
@@ -44,10 +47,11 @@ export const signInSubmit = (email, password) => dispatch => {
   })
     .then(res => res.json())
     .then(user => {
-      if (user === "Error logging in.") {
-        dispatch({ type: SIGN_IN_FAILED, payload: "signin" });
-      } else {
+      if (user.id) {
         dispatch({ type: SIGN_IN_SUCCESS, payload: "home", userData: user });
+        dispatch({ type: CLEAR_SIGN_IN_FIELD });
+      } else {
+        dispatch({ type: SIGN_IN_FAILED, payload: user });
       }
     });
 };
@@ -73,11 +77,12 @@ export const registerSubmit = (name, email, password) => dispatch => {
   })
     .then(res => res.json())
     .then(user => {
-      if (user) {
+      if (user.id) {
         // load User Data on Home Page
         dispatch({ type: REGISTER_SUCCESS, payload: "home", userData: user });
+        dispatch({ type: CLEAR_REGISTER_FIELD });
       } else {
-        dispatch({ type: REGISTER_FAILED, payload: "register" });
+        dispatch({ type: REGISTER_FAILED, payload: user });
       }
     });
 };
@@ -97,14 +102,13 @@ export const setRegisterName = name => ({
   payload: name
 });
 
-export const setUrlField = url => ({
-  type: URL_CHANGED,
-  payload: url
-});
+export const setUrlField = url => dispatch => {
+  dispatch({ type: URL_CHANGED, payload: url });
+};
 
 export const generateFaces = (url, id) => dispatch => {
-  // Clarifai API is working now
-  dispatch({ type: CALCULATING_FACES_PENDING });
+  // first set the image component + run Clarifai API
+  dispatch({ type: CALCULATING_FACES_PENDING, payload: url });
 
   app.models
     .predict(Clarifai.FACE_DETECT_MODEL, url)
@@ -140,7 +144,6 @@ const constructFaceBox = data => {
     const image = document.getElementById("inputImage");
     const width = Number(image.width);
     const height = Number(image.height);
-    console.log(width, height);
     const box = region.region_info.bounding_box;
     return {
       leftCol: Number(box.left_col * width),
