@@ -86,12 +86,12 @@ export const signIn = (state = initialSignIn, action = {}) => {
     case SIGN_IN_EMAIL_CHANGED:
       return Object.assign({}, state, {
         email: action.payload,
-        emailActivated: false
+        emailActivated: true
       });
     case SIGN_IN_PASSWORD_CHANGED:
       return Object.assign({}, state, {
         password: action.payload,
-        passwordActivated: false
+        passwordActivated: true
       });
     case CLEAR_SIGN_IN_FIELD:
       return Object.assign({}, state, initialSignIn);

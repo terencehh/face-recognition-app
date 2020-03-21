@@ -29,7 +29,7 @@ const SignIn = ({
                   id="email-address"
                   onChange={onEmailChange}
                 />
-                {emailActivated && <p>{basicNullCheck(email, "email")}</p>}
+                {emailActivated && <p className="washed-red">{basicNullCheck(email, "email")}</p>}
               </div>
               <div className="mv3">
                 <label className="db fw6 lh-copy f6" htmlFor="password">
@@ -42,7 +42,7 @@ const SignIn = ({
                   id="password"
                   onChange={onPassChange}
                 />
-                {passwordActivated && <p>{basicNullCheck(pass, "password")}</p>}
+                {passwordActivated && <p className="washed-red">{basicNullCheck(pass, "password")}</p>}
               </div>
             </fieldset>
             <div>
@@ -66,7 +66,7 @@ const SignIn = ({
         </main>
       </article>
       {/* Display Error Information if occur */}
-      {signInFailed.length > 0 && <p className="f4 white">{signInFailed}</p>}
+      {signInFailed.length > 0 && <p className="f4 washed-red">{signInFailed}</p>}
     </div>
   );
 };

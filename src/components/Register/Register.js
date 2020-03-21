@@ -38,7 +38,7 @@ const Register = ({
                   id="first-name"
                   onChange={onFirstNameChange}
                 />
-                {firstNameActivated && <p>{validName(firstName)}</p>}
+                {firstNameActivated && <p className="washed-red">{validName(firstName)}</p>}
               </div>
               <div className="mt3">
                 <label className="db fw6 lh-copy f6" htmlFor="email-address">
@@ -51,7 +51,7 @@ const Register = ({
                   id="last-name"
                   onChange={onLastNameChange}
                 />
-                {lastNameActivated && <p>{validName(lastName)}</p>}
+                {lastNameActivated && <p className="washed-red">{validName(lastName)}</p>}
               </div>
               <div className="mt3">
                 <label className="db fw6 lh-copy f6" htmlFor="email-address">
@@ -64,7 +64,7 @@ const Register = ({
                   id="email-address"
                   onChange={onEmailChange}
                 />
-                {registerEmailActivated && <p>{validEmail(email)}</p>}
+                {registerEmailActivated && <p className="washed-red">{validEmail(email)}</p>}
               </div>
               <div className="mv3">
                 <label className="db fw6 lh-copy f6" htmlFor="password">
@@ -77,7 +77,7 @@ const Register = ({
                   id="password"
                   onChange={onPassChange}
                 />
-                {registerPasswordActivated && <p>{validPassword(pass)}</p>}
+                {registerPasswordActivated && <p className="washed-red">{validPassword(pass)}</p>}
               </div>
               <div className="mv3">
                 <label className="db fw6 lh-copy f6" htmlFor="confirm-password">
@@ -90,7 +90,7 @@ const Register = ({
                   id="confirm-password"
                   onChange={onConfirmPassChange}
                 />
-                {confirmPassActivated && <p>{checkPassMatch(pass, confirmPass)}</p>}
+                {confirmPassActivated && <p className="washed-red">{checkPassMatch(pass, confirmPass)}</p>}
               </div>
             </fieldset>
             <div>
@@ -108,11 +108,12 @@ const Register = ({
       </article>
 
       {/* Display Error Information if occur */}
-      {registerFailed.length > 0 && <p className="f4 white">{registerFailed}</p>}
-      }
+      {registerFailed.length > 0 && <p className="f4 washed-red">{registerFailed}</p>}
     </div >
   );
 };
+
+export default Register;
 
 const validEmail = email => {
   // regex taken from https://www.w3resource.com/javascript/form/email-validation.php
