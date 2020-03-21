@@ -7,7 +7,9 @@ const SignIn = ({
   onPassChange,
   onSubmit,
   onRouteChange,
-  signInFailed
+  signInFailed,
+  emailActivated,
+  passwordActivated
 }) => {
   return (
     <div>
@@ -27,6 +29,7 @@ const SignIn = ({
                   id="email-address"
                   onChange={onEmailChange}
                 />
+                {emailActivated && <p>{basicNullCheck(email, "email")}</p>}
               </div>
               <div className="mv3">
                 <label className="db fw6 lh-copy f6" htmlFor="password">
@@ -39,6 +42,7 @@ const SignIn = ({
                   id="password"
                   onChange={onPassChange}
                 />
+                {passwordActivated && <p>{basicNullCheck(pass, "password")}</p>}
               </div>
             </fieldset>
             <div>
@@ -61,10 +65,16 @@ const SignIn = ({
           </div>
         </main>
       </article>
-      {/* Display Error Information if occurr */}
+      {/* Display Error Information if occur */}
       {signInFailed.length > 0 && <p className="f4 white">{signInFailed}</p>}
     </div>
   );
 };
 
 export default SignIn;
+
+const basicNullCheck = (text, type) => {
+  if (!text) {
+    return `Please fill in your ${type}.`
+  }
+}

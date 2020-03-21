@@ -30,31 +30,41 @@ const initialRegister = {
   lastName: "",
   email: "",
   password: "",
-  confirmPass: ""
+  confirmPass: "",
+  firstNameActivated: false,
+  lastNameActivated: false,
+  emailActivated: false,
+  passwordActivated: false,
+  confirmPassActivated: false
 };
 
 export const register = (state = initialRegister, action = {}) => {
   switch (action.type) {
     case REGISTER_FNAME_CHANGED:
       return Object.assign({}, state, {
-        firstName: action.payload
+        firstName: action.payload,
+        firstNameActivated: true
       });
     case REGISTER_LNAME_CHANGED:
       return Object.assign({}, state, {
-        lastName: action.payload
+        lastName: action.payload,
+        lastNameActivated: true
       });
     case REGISTER_EMAIL_CHANGED:
       return Object.assign({}, state, {
-        email: action.payload
+        email: action.payload,
+        emailActivated: true
       });
     case REGISTER_PASSWORD_CHANGED:
       return Object.assign({}, state, {
-        password: action.payload
+        password: action.payload,
+        passwordActivated: true
       });
 
     case REGISTER_CONFIRM_PASS_CHANGED:
       return Object.assign({}, state, {
-        confirmPass: action.payload
+        confirmPass: action.payload,
+        confirmPassActivated: true
       });
 
     case CLEAR_REGISTER_FIELD:
@@ -66,18 +76,22 @@ export const register = (state = initialRegister, action = {}) => {
 
 const initialSignIn = {
   email: "",
-  password: ""
+  password: "",
+  emailActivated: false,
+  passwordActivated: false,
 };
 
 export const signIn = (state = initialSignIn, action = {}) => {
   switch (action.type) {
     case SIGN_IN_EMAIL_CHANGED:
       return Object.assign({}, state, {
-        email: action.payload
+        email: action.payload,
+        emailActivated: false
       });
     case SIGN_IN_PASSWORD_CHANGED:
       return Object.assign({}, state, {
-        password: action.payload
+        password: action.payload,
+        passwordActivated: false
       });
     case CLEAR_SIGN_IN_FIELD:
       return Object.assign({}, state, initialSignIn);

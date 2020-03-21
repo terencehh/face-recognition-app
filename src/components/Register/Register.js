@@ -1,4 +1,5 @@
 import React from "react";
+
 const Register = ({
   firstName,
   lastName,
@@ -11,8 +12,14 @@ const Register = ({
   onPassChange,
   onConfirmPassChange,
   onSubmit,
-  registerFailed
+  registerFailed,
+  firstNameActivated,
+  lastNameActivated,
+  registerEmailActivated,
+  registerPasswordActivated,
+  confirmPassActivated,
 }) => {
+
   return (
     <div>
       <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
@@ -31,6 +38,7 @@ const Register = ({
                   id="first-name"
                   onChange={onFirstNameChange}
                 />
+                {firstNameActivated && <p>{validName(firstName)}</p>}
               </div>
               <div className="mt3">
                 <label className="db fw6 lh-copy f6" htmlFor="email-address">
@@ -43,6 +51,7 @@ const Register = ({
                   id="last-name"
                   onChange={onLastNameChange}
                 />
+                {lastNameActivated && <p>{validName(lastName)}</p>}
               </div>
               <div className="mt3">
                 <label className="db fw6 lh-copy f6" htmlFor="email-address">
@@ -55,6 +64,7 @@ const Register = ({
                   id="email-address"
                   onChange={onEmailChange}
                 />
+                {registerEmailActivated && <p>{validEmail(email)}</p>}
               </div>
               <div className="mv3">
                 <label className="db fw6 lh-copy f6" htmlFor="password">
@@ -67,6 +77,7 @@ const Register = ({
                   id="password"
                   onChange={onPassChange}
                 />
+                {registerPasswordActivated && <p>{validPassword(pass)}</p>}
               </div>
               <div className="mv3">
                 <label className="db fw6 lh-copy f6" htmlFor="confirm-password">
@@ -79,6 +90,7 @@ const Register = ({
                   id="confirm-password"
                   onChange={onConfirmPassChange}
                 />
+                {confirmPassActivated && <p>{checkPassMatch(pass, confirmPass)}</p>}
               </div>
             </fieldset>
             <div>
@@ -95,19 +107,53 @@ const Register = ({
         </main>
       </article>
 
-      {/* Display Error Information if occurr */}
-      {registerFailed.length > 0 && (
-        <div className="white">
-          <p className="f4">Error Occured, Resolve the following issues:</p>
-          <ul style={{ listStyleType: "none" }}>
-            {
-              registerFailed.map((error, i) => <li key={i}>{error}</li>)
-            }
-          </ul>
-        </div>
-      )
+      {/* Display Error Information if occur */}
+      {registerFailed.length > 0 && <p className="f4 white">{registerFailed}</p>}
       }
     </div >
   );
 };
-export default Register;
+
+const validEmail = email => {
+  // regex taken from https://www.w3resource.com/javascript/form/email-validation.php
+  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+    return "";
+  }
+  return "Please enter a valid email address.";
+};
+
+// EXTREMELY BASIC - SUBJECT TO IMPROVEMENTS IN FUTURE
+const validPassword = password => {
+  if (password.length < 6) {
+    return "Password must contain at least six characters.";
+  }
+  return "";
+};
+
+// for checking names upon register - max length is 50, first letter must be Capital.
+const validName = (name) => {
+
+  const stringLength = name.replace(/\s/g, '')
+
+  // remove all whitespaces and check if empty string
+  if (!stringLength.length) {
+    return `Please enter at least one alphabetical character.`
+  }
+
+  if (!(/^[a-zA-Z\s]*$/.test(name))) {
+    return `Please ensure your name only consists of alphabets.`
+  }
+
+  if (stringLength > 50) {
+    return `Please ensure your total characters does not exceed 50.`
+  }
+
+  return ""
+};
+
+const checkPassMatch = (pass, submitPass) => {
+  if (pass !== submitPass) {
+    return "Please make sure your two passwords match."
+  }
+  return ""
+}

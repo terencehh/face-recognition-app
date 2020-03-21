@@ -156,13 +156,21 @@ const mapStateToProps = state => {
     // sign in state
     signInEmail: state.signIn.email,
     signInPassword: state.signIn.password,
+    emailActivated: state.signIn.emailActivated,
+    passwordActivated: state.signIn.passwordActivated,
 
     // register state
     registerFName: state.register.firstName,
     registerLName: state.register.lastName,
     registerEmail: state.register.email,
     registerPass: state.register.password,
-    registerConfirmPass: state.register.confirmPass
+    registerConfirmPass: state.register.confirmPass,
+    firstNameActivated: state.register.firstNameActivated,
+    lastNameActivated: state.register.lastNameActivated,
+    registerEmailActivated: state.register.emailActivated,
+    registerPasswordActivated: state.register.passwordActivated,
+    confirmPassActivated: state.register.confirmPassActivated
+
   };
 };
 
@@ -224,10 +232,17 @@ class App extends Component {
       registerEmail,
       registerPass,
       registerConfirmPass,
+      firstNameActivated,
+      lastNameActivated,
+      registerEmailActivated,
+      registerPasswordActivated,
+      confirmPassActivated,
 
       // sign in info
       signInEmail,
       signInPassword,
+      emailActivated,
+      passwordActivated,
 
       // image url info
       imageUrl,
@@ -286,6 +301,8 @@ class App extends Component {
             onSubmit={onSignInSubmit}
             onRouteChange={onRouteChange}
             signInFailed={signInFailed}
+            emailActivated={emailActivated}
+            passwordActivated={passwordActivated}
           />
         ) : (
               <Register
@@ -301,6 +318,11 @@ class App extends Component {
                 onConfirmPassChange={onConfirmPassChange}
                 onSubmit={onRegisterSubmit}
                 registerFailed={registerFailed}
+                firstNameActivated={firstNameActivated}
+                lastNameActivated={lastNameActivated}
+                registerEmailActivated={registerEmailActivated}
+                registerPasswordActivated={registerPasswordActivated}
+                confirmPassActivated={confirmPassActivated}
               />
             )}
       </div>
