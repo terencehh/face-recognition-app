@@ -1,10 +1,21 @@
 // Express.js for server-side routing
 const express = require("express");
+const path = require("path");
 const PORT = process.env.PORT;
+
+// if in Production, serve files from build directory
+if (PORT) {
+  app.use(express.static(path.join(__dirname, "./build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname + "./build/index.html"));
+  });
+}
+
 // bcrypt for hashing passwords
 const bcrypt = require("bcrypt-nodejs");
 const cors = require("cors");
 const knex = require("knex");
+
 const register = require("./controllers/register");
 const signin = require("./controllers/sign-in");
 const profile = require("./controllers/profile");
