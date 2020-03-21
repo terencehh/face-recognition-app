@@ -253,8 +253,6 @@ class App extends Component {
       onConfirmPassChange
     } = this.props;
 
-    // TODO: INPUT VALIDATION for SIGNIN & REGISTER
-    // TODO: ERROR DISPLAY WHEN SIGNIN & REGISTER FAILS
     return (
       <div className="App">
         <Particles className="particles" params={particleOptions} />
