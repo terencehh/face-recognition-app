@@ -1,2 +1,2 @@
 Procfile
-deployment: node server.js
+deployment: node server.js && npm run build --prefix client

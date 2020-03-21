@@ -18,10 +18,12 @@
     "tachyons": "^4.11.1"
   },
   "scripts": {
+    "client-install": "npm install --prefix client",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "client": "npm start --prefix client"
   },
   "eslintConfig": {
     "extends": "react-app"
