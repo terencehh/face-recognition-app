@@ -46,6 +46,7 @@ const validPassword = password => {
   return "Success";
 };
 
+// for checking names upon register - DEVELOP IN FUTURE
 const validName = name => {};
 
 module.exports = {
