@@ -4,7 +4,7 @@
 
 ## Instructions
 
-> The App is split into two components, the React Front-End and Server Back-End. To simulate a client-server environment, please go to my server API repo https://github.com/terencehh/face-recognition-app-api and launch the server. Note that you will need to specify different port numbers on the client & server.
+> The App is split into two components, the React Front-End and Server Back-End. This repo hosts the Front-End React App. To simulate a client-server environment, please go to my Back-End API Repo https://github.com/terencehh/face-recognition-app-api and follow the instructions there. Note that you will need to specify different port numbers on the client & server.
 
 ## Install
 
