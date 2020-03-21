@@ -14,7 +14,7 @@ const image = require("./controllers/image");
 const db = knex({
   client: "pg",
   connection: {
-    host: "localhost",
+    host: "postgresql-reticulated-23112",
     user: "ngter",
     password: "123",
     database: "facerecognitionapp"
@@ -25,6 +25,11 @@ const app = express();
 app.use(express.json());
 // allow cross origin resource sharing
 app.use(cors());
+
+//profile/:userId --> GET Request --> {user}
+app.get("/", (req, res) => {
+  res.send("App is working!");
+});
 
 //signin --> POST Request --> Success/Fail
 app.post("/signin", signin.handleSignIn(db, bcrypt));
@@ -41,6 +46,6 @@ app.put("/image", image.handleImagePut(db));
 //API call to Clarifai
 app.post("/imageurl", image.handleApiCall());
 
-app.listen(3001, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log(`Server Successfully Started on Port ${PORT}`);
 });

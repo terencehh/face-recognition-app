@@ -45,7 +45,7 @@ export const setNewRoute = route => dispatch => {
 // this function returns a function due to fetch call, so we dispatch
 // once done the status of sign in
 export const signInSubmit = (email, password) => dispatch => {
-  fetch("http://localhost:3001/signin", {
+  fetch("https://git.heroku.com/protected-scrubland-83638.git/signin", {
     method: "post",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password })
@@ -81,7 +81,7 @@ export const registerSubmit = (
   password,
   confirmPass
 ) => dispatch => {
-  fetch("http://localhost:3001/register", {
+  fetch("https://git.heroku.com/protected-scrubland-83638.git/register", {
     method: "post",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ firstName, lastName, email, password, confirmPass })
@@ -132,7 +132,7 @@ export const generateFaces = (url, id) => dispatch => {
   dispatch({ type: CALCULATING_FACES_PENDING, payload: url });
 
   // api call to clarifai
-  fetch("http://localhost:3001/imageurl", {
+  fetch("https://git.heroku.com/protected-scrubland-83638.git/imageurl", {
     method: "post",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -145,7 +145,7 @@ export const generateFaces = (url, id) => dispatch => {
       // if successful, only then increment entries
       console.log("really successful?", response);
       if (response !== "Unable to Work with API.") {
-        fetch("http://localhost:3001/image", {
+        fetch("https://git.heroku.com/protected-scrubland-83638.git/image", {
           method: "put",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
