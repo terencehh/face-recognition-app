@@ -2,7 +2,6 @@
 
 # dependencies
 /react-front-end/node_modules
-/node_modules
 /.pnp
 .pnp.js
 /api-server/node_modules
