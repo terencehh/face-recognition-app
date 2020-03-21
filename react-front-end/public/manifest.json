@@ -1,9 +1,0 @@
-{
-  "short_name": "Face Recognition App",
-  "name": "Face Recognition App",
-  "icons": [],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
-}
