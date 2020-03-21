@@ -4,7 +4,7 @@
 
 ## Instructions
 
-> The App is split into two directories, the React Front-End and Server Back-End. To simulate a client-server environment, run npm install and npm start in each directories respectively.
+> The App is split into two components, the React Front-End and Server Back-End. To simulate a client-server environment, please go to my server API repo https://github.com/terencehh/face-recognition-app-api and launch the server. Note that you will need to specify different port numbers on the client & server.
 
 ## Install
 
