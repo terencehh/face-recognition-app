@@ -16,7 +16,7 @@ const db = knex({
   connection: {
     host: "localhost",
     user: "ngter",
-    password: "021358",
+    password: "123",
     database: "facerecognitionapp"
   }
 });
