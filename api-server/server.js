@@ -41,6 +41,6 @@ app.put("/image", image.handleImagePut(db));
 //API call to Clarifai
 app.post("/imageurl", image.handleApiCall());
 
-app.listen(PORT, () => {
+app.listen(3001, () => {
   console.log(`Server Successfully Started on Port ${PORT}`);
 });

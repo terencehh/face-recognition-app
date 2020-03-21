@@ -1,8 +1,13 @@
+const validate = require("../form-validation");
+
 const handleSignIn = (db, bcrypt) => (req, res) => {
   const { email, password } = req.body;
 
-  if (!email || !password) {
-    return res.status(400).json("Incorrect Form Submission");
+  // VALIDATION CHECK FOR VALID EMAIL & PASSWORD
+  validateResult = validate.checkSignIn(email, password);
+
+  if (validateResult !== "Success") {
+    return res.status(400).json(validateResult);
   }
 
   // check email & password against database
@@ -23,16 +28,22 @@ const handleSignIn = (db, bcrypt) => (req, res) => {
             res
               .status(400)
               .json(
-                "User Exists but currently unable to get user. Please try another time."
+                "User Exists but we are currently unable to get user data. Please try another time."
               )
           );
       } else {
         // Email exists but password is wrong
-        res.status(400).json("Wrong Credentials");
+        res
+          .status(400)
+          .json("Wrong Credentials. Please double-check and try again.");
       }
     })
     // Email entered does not Exist
-    .catch(err => res.status(400).json("Wrong Credentials."));
+    .catch(err =>
+      res
+        .status(400)
+        .json("Wrong Credentials. Please double-check and try again.")
+    );
 };
 
 module.exports = {

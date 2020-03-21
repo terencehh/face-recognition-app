@@ -1,8 +1,19 @@
-const handleRegister = (db, bcrypt) => (req, res) => {
-  const { email, password, name } = req.body;
+const validate = require("../form-validation");
 
-  if (!email || !name || !password) {
-    return res.status(400).json("Incorrect Form Submission");
+const handleRegister = (db, bcrypt) => (req, res) => {
+  const { firstName, lastName, email, password, confirmPass } = req.body;
+
+  // VALIDATION CHECK FOR VALID EMAIL, NAME & PASSWORD
+  validateResult = validate.checkRegister(
+    firstName,
+    lastName,
+    email,
+    password,
+    confirmPass
+  );
+
+  if (validateResult !== "Success") {
+    return res.status(400).json(validateResult);
   }
 
   // hash the password for security
@@ -22,7 +33,8 @@ const handleRegister = (db, bcrypt) => (req, res) => {
           .returning("*")
           .insert({
             email: loginEmail[0],
-            name,
+            firstname: firstName,
+            lastname: lastName,
             joined: new Date()
           })
           .then(user => {
@@ -32,7 +44,11 @@ const handleRegister = (db, bcrypt) => (req, res) => {
       .then(trx.commit)
       .catch(trx.rollback);
   }).catch(err =>
-    res.status(400).json("Unable to Register. Email already exists.")
+    res
+      .status(400)
+      .json(
+        "Unable to Register. Email already exists. Please try using a different email."
+      )
   );
 };
 
