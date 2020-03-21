@@ -267,12 +267,12 @@ class App extends Component {
               onPictureSubmit={onPictureSubmit}
               imageUrl={imageUrl}
               id={userProfile.id}
+              isPending={isPending}
             />
             <div>
               <FaceRecognition
                 box={box}
                 submittedUrl={submittedUrl}
-                isPending={isPending}
                 error={error}
               />
             </div>
@@ -288,21 +288,21 @@ class App extends Component {
             signInFailed={signInFailed}
           />
         ) : (
-          <Register
-            firstName={registerFName}
-            lastName={registerLName}
-            email={registerEmail}
-            pass={registerPass}
-            confirmPass={registerConfirmPass}
-            onFirstNameChange={onRegisterFNameChange}
-            onLastNameChange={onRegisterLNameChange}
-            onEmailChange={onRegisterEmailChange}
-            onPassChange={onRegisterPasswordChange}
-            onConfirmPassChange={onConfirmPassChange}
-            onSubmit={onRegisterSubmit}
-            registerFailed={registerFailed}
-          />
-        )}
+              <Register
+                firstName={registerFName}
+                lastName={registerLName}
+                email={registerEmail}
+                pass={registerPass}
+                confirmPass={registerConfirmPass}
+                onFirstNameChange={onRegisterFNameChange}
+                onLastNameChange={onRegisterLNameChange}
+                onEmailChange={onRegisterEmailChange}
+                onPassChange={onRegisterPasswordChange}
+                onConfirmPassChange={onConfirmPassChange}
+                onSubmit={onRegisterSubmit}
+                registerFailed={registerFailed}
+              />
+            )}
       </div>
     );
   }

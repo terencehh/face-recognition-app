@@ -2,7 +2,7 @@ import React from "react";
 import "./FaceRecognition.css";
 
 // POSSIBLE: create a loading animation for isPending requests - however, as image loading time is relatively short, no need to do so for now.
-const FaceRecognition = ({ box, submittedUrl, isPending, error }) => {
+const FaceRecognition = ({ box, submittedUrl, error }) => {
   return (
     <div className="center ma">
       <div className="absolute mt2">
