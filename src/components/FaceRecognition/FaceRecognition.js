@@ -32,7 +32,7 @@ const FaceRecognition = ({ box, submittedUrl, isPending, error }) => {
           </div>
         ) : (
           <div>
-            <p className="f4 white">
+            <p className="f4 white center">
               Error Generating Image. Please check that you have submitted a
               valid image URL and try again.
             </p>
