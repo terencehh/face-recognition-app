@@ -45,7 +45,7 @@ export const setNewRoute = route => dispatch => {
 // this function returns a function due to fetch call, so we dispatch
 // once done the status of sign in
 export const signInSubmit = (email, password) => dispatch => {
-  fetch("https://protected-scrubland-83638.herokuapp.com/signin", {
+  fetch("https://face-detect-react-app-api.herokuapp.com/signin", {
     method: "post",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password })
@@ -81,7 +81,7 @@ export const registerSubmit = (
   password,
   confirmPass
 ) => dispatch => {
-  fetch("https://protected-scrubland-83638.herokuapp.com/register", {
+  fetch("https://face-detect-react-app-api.herokuapp.com/register", {
     method: "post",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ firstName, lastName, email, password, confirmPass })
@@ -132,7 +132,7 @@ export const generateFaces = (url, id) => dispatch => {
   dispatch({ type: CALCULATING_FACES_PENDING, payload: url });
 
   // api call to clarifai
-  fetch("https://protected-scrubland-83638.herokuapp.com/imageurl", {
+  fetch("https://face-detect-react-app-api.herokuapp.com/imageurl", {
     method: "post",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -145,7 +145,7 @@ export const generateFaces = (url, id) => dispatch => {
       // if successful, only then increment entries
       console.log("really successful?", response);
       if (response !== "Unable to Work with API.") {
-        fetch("https://protected-scrubland-83638.herokuapp.com/image", {
+        fetch("https://face-detect-react-app-api.herokuapp.com/image", {
           method: "put",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
