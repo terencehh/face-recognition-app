@@ -18,8 +18,10 @@ import {
   setSignInPassword,
   registerSubmit,
   setRegisterEmail,
-  setRegisterName,
-  setRegisterPassword
+  setRegisterFName,
+  setRegisterLName,
+  setRegisterPassword,
+  setConfirmPassword
 } from "../actions";
 
 const particleOptions = {
@@ -156,9 +158,11 @@ const mapStateToProps = state => {
     signInPassword: state.signIn.password,
 
     // register state
-    registerName: state.register.name,
+    registerFName: state.register.firstName,
+    registerLName: state.register.lastName,
     registerEmail: state.register.email,
-    registerPass: state.register.password
+    registerPass: state.register.password,
+    registerConfirmPass: state.register.confirmPass
   };
 };
 
@@ -184,13 +188,23 @@ const mapDispatchToProps = dispatch => {
     // REGISTER SECTION
     onRegisterEmailChange: event =>
       dispatch(setRegisterEmail(event.target.value)),
-    onRegisterNameChange: event =>
-      dispatch(setRegisterName(event.target.value)),
+
+    onRegisterFNameChange: event =>
+      dispatch(setRegisterFName(event.target.value)),
+
+    onRegisterLNameChange: event =>
+      dispatch(setRegisterLName(event.target.value)),
+
     onRegisterPasswordChange: event =>
       dispatch(setRegisterPassword(event.target.value)),
 
-    onRegisterSubmit: (name, email, password) =>
-      dispatch(registerSubmit(name, email, password))
+    onConfirmPassChange: event =>
+      dispatch(setConfirmPassword(event.target.value)),
+
+    onRegisterSubmit: (firstName, lastName, email, password, confirmPass) =>
+      dispatch(
+        registerSubmit(firstName, lastName, email, password, confirmPass)
+      )
   };
 };
 
@@ -205,9 +219,11 @@ class App extends Component {
       userProfile,
 
       // register info
-      registerName,
+      registerFName,
+      registerLName,
       registerEmail,
       registerPass,
+      registerConfirmPass,
 
       // sign in info
       signInEmail,
@@ -230,9 +246,11 @@ class App extends Component {
       onSignInPasswordChange,
       onSignInSubmit,
       onRegisterSubmit,
-      onRegisterNameChange,
+      onRegisterFNameChange,
+      onRegisterLNameChange,
       onRegisterEmailChange,
-      onRegisterPasswordChange
+      onRegisterPasswordChange,
+      onConfirmPassChange
     } = this.props;
 
     // TODO: INPUT VALIDATION for SIGNIN & REGISTER
@@ -245,7 +263,7 @@ class App extends Component {
         {route === "home" ? (
           <div>
             <Logo />
-            <Rank name={userProfile.name} entries={userProfile.entries} />
+            <Rank name={userProfile.firstname} entries={userProfile.entries} />
             <ImageLinkForm
               onInputChange={onInputChange}
               onPictureSubmit={onPictureSubmit}
@@ -269,16 +287,22 @@ class App extends Component {
             onPassChange={onSignInPasswordChange}
             onSubmit={onSignInSubmit}
             onRouteChange={onRouteChange}
+            signInFailed={signInFailed}
           />
         ) : (
           <Register
-            name={registerName}
+            firstName={registerFName}
+            lastName={registerLName}
             email={registerEmail}
             pass={registerPass}
-            onNameChange={onRegisterNameChange}
+            confirmPass={registerConfirmPass}
+            onFirstNameChange={onRegisterFNameChange}
+            onLastNameChange={onRegisterLNameChange}
             onEmailChange={onRegisterEmailChange}
             onPassChange={onRegisterPasswordChange}
+            onConfirmPassChange={onConfirmPassChange}
             onSubmit={onRegisterSubmit}
+            registerFailed={registerFailed}
           />
         )}
       </div>

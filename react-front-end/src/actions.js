@@ -12,13 +12,17 @@ import {
   SIGN_IN_EMAIL_CHANGED,
   SIGN_IN_PASSWORD_CHANGED,
   CLEAR_SIGN_IN_FIELD,
-  REGISTER_NAME_CHANGED,
+  REGISTER_FNAME_CHANGED,
+  REGISTER_LNAME_CHANGED,
   REGISTER_EMAIL_CHANGED,
   REGISTER_PASSWORD_CHANGED,
+  REGISTER_CONFIRM_PASS_CHANGED,
   CLEAR_REGISTER_FIELD,
   UPDATE_ENTRIES,
   RESET_URL,
-  RESET_FACE_BOXES
+  RESET_FACE_BOXES,
+  CLEAR_REGISTER_ERROR,
+  CLEAR_SIGN_IN_ERROR
 } from "./constants.js";
 
 export const setNewRoute = route => dispatch => {
@@ -26,7 +30,13 @@ export const setNewRoute = route => dispatch => {
     dispatch({ type: SIGNING_OUT });
     dispatch({ type: RESET_URL });
     dispatch({ type: RESET_FACE_BOXES });
+  } else if (route === "signin") {
+    dispatch({ type: CLEAR_REGISTER_FIELD });
+    dispatch({ type: CLEAR_REGISTER_ERROR });
+    dispatch({ type: ROUTE_CHANGED, payload: route });
   } else {
+    dispatch({ type: CLEAR_SIGN_IN_FIELD });
+    dispatch({ type: CLEAR_SIGN_IN_ERROR });
     dispatch({ type: ROUTE_CHANGED, payload: route });
   }
 };
@@ -64,11 +74,17 @@ export const setSignInPassword = password => ({
 // POST Request to Register
 // this function returns a function due to fetch call, so we dispatch
 // once done the status of sign in
-export const registerSubmit = (name, email, password) => dispatch => {
+export const registerSubmit = (
+  firstName,
+  lastName,
+  email,
+  password,
+  confirmPass
+) => dispatch => {
   fetch("http://localhost:3001/register", {
     method: "post",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, email, password })
+    body: JSON.stringify({ firstName, lastName, email, password, confirmPass })
   })
     .then(res => res.json())
     .then(user => {
@@ -92,8 +108,18 @@ export const setRegisterPassword = password => ({
   payload: password
 });
 
-export const setRegisterName = name => ({
-  type: REGISTER_NAME_CHANGED,
+export const setConfirmPassword = confirmPass => ({
+  type: REGISTER_CONFIRM_PASS_CHANGED,
+  payload: confirmPass
+});
+
+export const setRegisterFName = name => ({
+  type: REGISTER_FNAME_CHANGED,
+  payload: name
+});
+
+export const setRegisterLName = name => ({
+  type: REGISTER_LNAME_CHANGED,
   payload: name
 });
 
@@ -116,8 +142,9 @@ export const generateFaces = (url, id) => dispatch => {
     .then(response => response.json())
     // response successful increment entries
     .then(response => {
-      // if successful there is an output response
-      if (response) {
+      // if successful, only then increment entries
+      console.log("really successful?", response);
+      if (response !== "Unable to Work with API.") {
         fetch("http://localhost:3001/image", {
           method: "put",
           headers: { "Content-Type": "application/json" },

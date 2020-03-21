@@ -7,31 +7,41 @@ import {
   SIGN_IN_EMAIL_CHANGED,
   SIGN_IN_PASSWORD_CHANGED,
   CLEAR_SIGN_IN_FIELD,
-  REGISTER_NAME_CHANGED,
+  REGISTER_FNAME_CHANGED,
+  REGISTER_LNAME_CHANGED,
   REGISTER_EMAIL_CHANGED,
   CLEAR_REGISTER_FIELD,
   REGISTER_SUCCESS,
   REGISTER_FAILED,
   REGISTER_PASSWORD_CHANGED,
+  REGISTER_CONFIRM_PASS_CHANGED,
   CALCULATING_FACES_PENDING,
   CALCULATING_FACES_SUCCESS,
   CALCULATING_FACES_FAILED,
   UPDATE_ENTRIES,
   RESET_URL,
-  RESET_FACE_BOXES
+  RESET_FACE_BOXES,
+  CLEAR_SIGN_IN_ERROR,
+  CLEAR_REGISTER_ERROR
 } from "./constants.js";
 
 const initialRegister = {
-  name: "",
+  firstName: "",
+  lastName: "",
   email: "",
-  password: ""
+  password: "",
+  confirmPass: ""
 };
 
 export const register = (state = initialRegister, action = {}) => {
   switch (action.type) {
-    case REGISTER_NAME_CHANGED:
+    case REGISTER_FNAME_CHANGED:
       return Object.assign({}, state, {
-        name: action.payload
+        firstName: action.payload
+      });
+    case REGISTER_LNAME_CHANGED:
+      return Object.assign({}, state, {
+        lastName: action.payload
       });
     case REGISTER_EMAIL_CHANGED:
       return Object.assign({}, state, {
@@ -41,6 +51,12 @@ export const register = (state = initialRegister, action = {}) => {
       return Object.assign({}, state, {
         password: action.payload
       });
+
+    case REGISTER_CONFIRM_PASS_CHANGED:
+      return Object.assign({}, state, {
+        confirmPass: action.payload
+      });
+
     case CLEAR_REGISTER_FIELD:
       return Object.assign({}, state, initialRegister);
     default:
@@ -85,6 +101,16 @@ export const userDefaults = (state = initialState, action = {}) => {
         route: action.payload
       });
 
+    case CLEAR_SIGN_IN_ERROR:
+      return Object.assign({}, state, {
+        signInFailed: ""
+      });
+
+    case CLEAR_REGISTER_ERROR:
+      return Object.assign({}, state, {
+        registerFailed: ""
+      });
+
     case SIGNING_OUT:
       return Object.assign({}, state, initialState);
 
@@ -94,13 +120,7 @@ export const userDefaults = (state = initialState, action = {}) => {
         registerFailed: "",
         isSignedIn: true,
         route: action.payload,
-        userProfile: {
-          id: action.userData.id,
-          name: action.userData.name,
-          email: action.userData.email,
-          entries: action.userData.entries,
-          joined: action.userData.joined
-        }
+        userProfile: action.userData
       });
 
     case SIGN_IN_FAILED:
@@ -114,13 +134,7 @@ export const userDefaults = (state = initialState, action = {}) => {
         route: action.payload,
         signInFailed: "",
         registerFailed: "",
-        userProfile: {
-          id: action.userData.id,
-          name: action.userData.name,
-          email: action.userData.email,
-          entries: action.userData.entries,
-          joined: action.userData.joined
-        }
+        userProfile: action.userData
       });
 
     case REGISTER_FAILED:
