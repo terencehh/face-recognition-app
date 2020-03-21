@@ -97,10 +97,17 @@ const Register = ({
 
       {/* Display Error Information if occurr */}
       {registerFailed.length > 0 && (
-        <p className="f4 white">{registerFailed}</p>
-      )}
-    </div>
+        <div className="white">
+          <p className="f4">Error Occured, Resolve the following issues:</p>
+          <ul style={{ listStyleType: "none" }}>
+            {
+              registerFailed.map((error, i) => <li key={i}>{error}</li>)
+            }
+          </ul>
+        </div>
+      )
+      }
+    </div >
   );
 };
-
 export default Register;
