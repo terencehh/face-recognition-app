@@ -154,6 +154,7 @@ const mapStateToProps = state => {
     box: state.faceBoxes.box,
     isPending: state.faceBoxes.isPending,
     error: state.faceBoxes.error,
+    faceDetected: state.faceBoxes.faceDetected,
 
     // sign in state
     signInEmail: state.signIn.email,
@@ -256,6 +257,7 @@ class App extends Component {
       box,
       isPending, // use to display loading bar when loading
       error, // use to display error message when API call failed
+      faceDetected,
 
       //dispatch functions
       onInputChange,
@@ -287,6 +289,7 @@ class App extends Component {
               imageUrl={imageUrl}
               id={userProfile.id}
               isPending={isPending}
+              faceDetected={faceDetected}
             />
             <div>
               <FaceRecognition

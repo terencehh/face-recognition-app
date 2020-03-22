@@ -18,6 +18,7 @@ import {
   CALCULATING_FACES_PENDING,
   CALCULATING_FACES_SUCCESS,
   CALCULATING_FACES_FAILED,
+  NO_FACES_DETECTED,
   UPDATE_ENTRIES,
   RESET_URL,
   RESET_FACE_BOXES,
@@ -214,7 +215,8 @@ const initialImageBox = {
   submittedUrl: "",
   box: [{}],
   isPending: false,
-  error: ""
+  error: "",
+  faceDetected: -1
 };
 
 export const faceBoxes = (state = initialImageBox, action = {}) => {
@@ -232,7 +234,8 @@ export const faceBoxes = (state = initialImageBox, action = {}) => {
     case CALCULATING_FACES_SUCCESS:
       return Object.assign({}, state, {
         box: action.payload,
-        isPending: false
+        isPending: false,
+        faceDetected: action.payload.length
       });
 
     case CALCULATING_FACES_FAILED:
@@ -240,6 +243,12 @@ export const faceBoxes = (state = initialImageBox, action = {}) => {
         error: action.payload,
         box: [{}],
         isPending: false
+      });
+
+    case NO_FACES_DETECTED:
+      return Object.assign({}, state, {
+        isPending: false,
+        faceDetected: 0
       });
 
     default:

@@ -1,7 +1,7 @@
 import React from "react";
 import "./ImageLinkForm.css";
 
-const ImageLinkForm = ({ onInputChange, onPictureSubmit, imageUrl, id, isPending }) => {
+const ImageLinkForm = ({ onInputChange, onPictureSubmit, imageUrl, id, isPending, faceDetected }) => {
   return (
     <div>
       <p className="f3">
@@ -9,6 +9,17 @@ const ImageLinkForm = ({ onInputChange, onPictureSubmit, imageUrl, id, isPending
           "This Magic Brain will detect faces in your pictures. Give it a try by simply submitting some image URLs."
         }
       </p>
+
+      {
+        (faceDetected !== -1) && (
+          <p className="f3 light-green">
+            {
+              faceDetected === 0 ? `No Face Detected` : faceDetected === 1 ? `1 Face Detected` : `${faceDetected} Faces Detected`
+            }
+          </p>
+        )
+      }
+
       <div className="center">
         <div className="form center pa4 br3 shadow-5">
           <input

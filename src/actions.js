@@ -3,6 +3,7 @@ import {
   CALCULATING_FACES_PENDING,
   CALCULATING_FACES_SUCCESS,
   CALCULATING_FACES_FAILED,
+  NO_FACES_DETECTED,
   ROUTE_CHANGED,
   SIGNING_OUT,
   SIGN_IN_SUCCESS,
@@ -134,6 +135,9 @@ export const setUrlField = url => dispatch => {
 };
 
 export const generateFaces = (url, id) => dispatch => {
+
+  dispatch({ type: RESET_FACE_BOXES });
+
   // first set the image component + run Clarifai API
   dispatch({ type: CALCULATING_FACES_PENDING, payload: url });
 
@@ -161,17 +165,23 @@ export const generateFaces = (url, id) => dispatch => {
       }
       return response;
     })
-    .then(imageData => constructFaceBox(imageData))
-    .then(boxData =>
-      dispatch({ type: CALCULATING_FACES_SUCCESS, payload: boxData })
-    )
+    .then(imageData => {
+
+      const faceData = imageData.outputs[0].data
+
+      if (faceData.regions) {
+        dispatch({ type: CALCULATING_FACES_SUCCESS, payload: constructFaceBox(faceData) })
+      } else {
+        dispatch({ type: NO_FACES_DETECTED })
+      }
+    })
     .catch(error =>
       dispatch({ type: CALCULATING_FACES_FAILED, payload: error })
     );
 };
 
 const constructFaceBox = data => {
-  const faces = data.outputs[0].data.regions;
+  const faces = data.regions;
 
   return faces.map(region => {
     const image = document.getElementById("inputImage");
