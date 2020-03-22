@@ -23,6 +23,8 @@ const rootReducer = combineReducers({
   register
 });
 
+console.log("PROCESS PORT IS: ", process.env.PORT)
+
 const logger = createLogger();
 const store = createStore(
   rootReducer,
