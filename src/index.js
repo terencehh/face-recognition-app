@@ -23,12 +23,13 @@ const rootReducer = combineReducers({
   register
 });
 
-console.log("PROCESS PORT IS: ", process.env.PORT)
+// APPLY LOGGER WHEN IN DEVELOPMENT BUILD
+// const logger = createLogger();
 
-const logger = createLogger();
 const store = createStore(
   rootReducer,
-  (process.env.PORT ? applyMiddleware(thunkMiddleware) : applyMiddleware(thunkMiddleware, logger))
+  // APPLY REDUX LOGGER WHEN IN DEVELOPMENT BUILD
+  applyMiddleware(thunkMiddleware)
 );
 
 ReactDOM.render(
