@@ -6,8 +6,10 @@ import {
   ROUTE_CHANGED,
   SIGNING_OUT,
   SIGN_IN_SUCCESS,
+  SIGN_IN_PENDING,
   SIGN_IN_FAILED,
   REGISTER_SUCCESS,
+  REGISTER_PENDING,
   REGISTER_FAILED,
   SIGN_IN_EMAIL_CHANGED,
   SIGN_IN_PASSWORD_CHANGED,
@@ -45,6 +47,9 @@ export const setNewRoute = route => dispatch => {
 // this function returns a function due to fetch call, so we dispatch
 // once done the status of sign in
 export const signInSubmit = (email, password) => dispatch => {
+
+  dispatch({ type: SIGN_IN_PENDING });
+
   fetch("https://face-detect-react-app-api.herokuapp.com/signin", {
     method: "post",
     headers: { "Content-Type": "application/json" },
@@ -71,9 +76,7 @@ export const setSignInPassword = password => ({
   payload: password
 });
 
-// POST Request to Register
-// this function returns a function due to fetch call, so we dispatch
-// once done the status of sign in
+// POST Request to Register this function returns a function due to fetch call, so we dispatch once done the status of sign in
 export const registerSubmit = (
   firstName,
   lastName,
@@ -81,6 +84,9 @@ export const registerSubmit = (
   password,
   confirmPass
 ) => dispatch => {
+
+  dispatch({ type: REGISTER_PENDING });
+
   fetch("https://face-detect-react-app-api.herokuapp.com/register", {
     method: "post",
     headers: { "Content-Type": "application/json" },

@@ -18,6 +18,7 @@ const Register = ({
   registerEmailActivated,
   registerPasswordActivated,
   confirmPassActivated,
+  registerPending
 }) => {
 
   return (
@@ -98,6 +99,7 @@ const Register = ({
                 className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
                 type="submit"
                 value="Register"
+                disabled={registerPending}
                 onClick={() =>
                   onSubmit(firstName, lastName, email, pass, confirmPass)
                 }
@@ -120,13 +122,13 @@ const validEmail = email => {
   if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
     return "";
   }
-  return "Please enter a valid email address.";
+  return "Please enter a valid email address";
 };
 
 // EXTREMELY BASIC - SUBJECT TO IMPROVEMENTS IN FUTURE
 const validPassword = password => {
   if (password.length < 6) {
-    return "Password must contain at least six characters.";
+    return "Password must contain at least six characters";
   }
   return "";
 };
@@ -138,15 +140,15 @@ const validName = (name) => {
 
   // remove all whitespaces and check if empty string
   if (!stringLength.length) {
-    return `Please enter at least one alphabetical character.`
+    return `Please enter at least one alphabetical character`
   }
 
   if (!(/^[a-zA-Z\s]*$/.test(name))) {
-    return `Please ensure your name only consists of alphabets.`
+    return `Please ensure your name only consists of alphabets`
   }
 
   if (stringLength > 50) {
-    return `Please ensure your total characters does not exceed 50.`
+    return `Please ensure your total characters does not exceed 50`
   }
 
   return ""
@@ -154,7 +156,7 @@ const validName = (name) => {
 
 const checkPassMatch = (pass, submitPass) => {
   if (pass !== submitPass) {
-    return "Please make sure your two passwords match."
+    return "Please make sure your two passwords match"
   }
   return ""
 }

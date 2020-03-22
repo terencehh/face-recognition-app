@@ -143,6 +143,8 @@ const mapStateToProps = state => {
     signInFailed: state.userDefaults.signInFailed,
     registerFailed: state.userDefaults.registerFailed,
     userProfile: state.userDefaults.userProfile,
+    signInPending: state.userDefaults.signInPending,
+    registerPending: state.userDefaults.registerPending,
 
     // url field state
     imageUrl: state.urlField.imageUrl,
@@ -225,6 +227,8 @@ class App extends Component {
       signInFailed, // display error message when sign in failed
       registerFailed, // display error message when register failed
       userProfile,
+      signInPending,
+      registerPending,
 
       // register info
       registerFName,
@@ -303,6 +307,7 @@ class App extends Component {
             signInFailed={signInFailed}
             emailActivated={emailActivated}
             passwordActivated={passwordActivated}
+            signInPending={signInPending}
           />
         ) : (
               <Register
@@ -323,6 +328,7 @@ class App extends Component {
                 registerEmailActivated={registerEmailActivated}
                 registerPasswordActivated={registerPasswordActivated}
                 confirmPassActivated={confirmPassActivated}
+                registerPending={registerPending}
               />
             )}
       </div>

@@ -9,7 +9,8 @@ const SignIn = ({
   onRouteChange,
   signInFailed,
   emailActivated,
-  passwordActivated
+  passwordActivated,
+  signInPending
 }) => {
   return (
     <div>
@@ -50,6 +51,7 @@ const SignIn = ({
                 className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
                 type="submit"
                 value="Submit"
+                disabled={signInPending}
                 // Also Routes to Home Page if Successful
                 onClick={() => onSubmit(email, pass)}
               />
@@ -75,6 +77,6 @@ export default SignIn;
 
 const basicNullCheck = (text, type) => {
   if (!text) {
-    return `Please fill in your ${type}.`
+    return `Please fill in your ${type}`
   }
 }

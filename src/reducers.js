@@ -22,7 +22,9 @@ import {
   RESET_URL,
   RESET_FACE_BOXES,
   CLEAR_SIGN_IN_ERROR,
-  CLEAR_REGISTER_ERROR
+  CLEAR_REGISTER_ERROR,
+  SIGN_IN_PENDING,
+  REGISTER_PENDING
 } from "./constants.js";
 
 const initialRegister = {
@@ -105,7 +107,9 @@ const initialState = {
   isSignedIn: false,
   signInFailed: "",
   registerFailed: "",
-  userProfile: {}
+  userProfile: {},
+  signInPending: false,
+  registerPending: false
 };
 
 export const userDefaults = (state = initialState, action = {}) => {
@@ -132,14 +136,29 @@ export const userDefaults = (state = initialState, action = {}) => {
       return Object.assign({}, state, {
         signInFailed: "",
         registerFailed: "",
+        signInPending: false,
+        registerPending: false,
         isSignedIn: true,
         route: action.payload,
         userProfile: action.userData
       });
 
+    case SIGN_IN_PENDING:
+      return Object.assign({}, state, {
+        signInPending: true,
+        signInFailed: ""
+      });
+
     case SIGN_IN_FAILED:
       return Object.assign({}, state, {
-        signInFailed: action.payload
+        signInFailed: action.payload,
+        signInPending: false,
+      });
+
+    case REGISTER_PENDING:
+      return Object.assign({}, state, {
+        registerFailed: "",
+        registerPending: true
       });
 
     case REGISTER_SUCCESS:
@@ -148,12 +167,14 @@ export const userDefaults = (state = initialState, action = {}) => {
         route: action.payload,
         signInFailed: "",
         registerFailed: "",
+        registerPending: false,
         userProfile: action.userData
       });
 
     case REGISTER_FAILED:
       return Object.assign({}, state, {
-        registerFailed: action.payload
+        registerFailed: action.payload,
+        registerPending: false
       });
 
     case UPDATE_ENTRIES:
