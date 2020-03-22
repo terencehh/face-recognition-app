@@ -148,8 +148,6 @@ export const generateFaces = (url, id) => dispatch => {
     .then(response => response.json())
     // response successful increment entries
     .then(response => {
-      // if successful, only then increment entries
-      console.log("really successful?", response);
       if (response !== "Unable to Work with API.") {
         fetch("https://face-detect-react-app-api.herokuapp.com/image", {
           method: "put",
@@ -159,14 +157,14 @@ export const generateFaces = (url, id) => dispatch => {
           })
         })
           .then(response => response.json())
-          .then(count => dispatch({ type: UPDATE_ENTRIES, payload: count }));
+          .then(count => dispatch({ type: UPDATE_ENTRIES, payload: count }))
+          .then(imageData => constructFaceBox(imageData))
+          .then(boxData =>
+            dispatch({ type: CALCULATING_FACES_SUCCESS, payload: boxData })
+          )
       }
       return response;
     })
-    .then(imageData => constructFaceBox(imageData))
-    .then(boxData =>
-      dispatch({ type: CALCULATING_FACES_SUCCESS, payload: boxData })
-    )
     .catch(error =>
       dispatch({ type: CALCULATING_FACES_FAILED, payload: error })
     );
