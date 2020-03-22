@@ -119,7 +119,7 @@ export default Register;
 
 const validEmail = email => {
   // regex taken from https://www.w3resource.com/javascript/form/email-validation.php
-  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+  if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
     return "";
   }
   return "Please enter a valid email address";
