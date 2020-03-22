@@ -12,8 +12,10 @@ import {
   signIn,
   register
 } from "./reducers";
-import { createLogger } from "redux-logger";
 import thunkMiddleware from "redux-thunk";
+
+// USE LOGGER FOR DEVELOPMENT WHEN DEBUGGING
+// import { createLogger } from "redux-logger";
 
 const rootReducer = combineReducers({
   userDefaults,
