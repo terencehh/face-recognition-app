@@ -157,14 +157,14 @@ export const generateFaces = (url, id) => dispatch => {
           })
         })
           .then(response => response.json())
-          .then(count => dispatch({ type: UPDATE_ENTRIES, payload: count }))
-          .then(imageData => constructFaceBox(imageData))
-          .then(boxData =>
-            dispatch({ type: CALCULATING_FACES_SUCCESS, payload: boxData })
-          )
+          .then(count => dispatch({ type: UPDATE_ENTRIES, payload: count }));
       }
       return response;
     })
+    .then(imageData => constructFaceBox(imageData))
+    .then(boxData =>
+      dispatch({ type: CALCULATING_FACES_SUCCESS, payload: boxData })
+    )
     .catch(error =>
       dispatch({ type: CALCULATING_FACES_FAILED, payload: error })
     );
