@@ -15,7 +15,7 @@ import {
 import thunkMiddleware from "redux-thunk";
 
 // USE LOGGER FOR DEVELOPMENT WHEN DEBUGGING
-import { createLogger } from "redux-logger";
+// import { createLogger } from "redux-logger";
 
 const rootReducer = combineReducers({
   userDefaults,
@@ -26,12 +26,12 @@ const rootReducer = combineReducers({
 });
 
 // APPLY LOGGER WHEN IN DEVELOPMENT BUILD
-const logger = createLogger();
+// const logger = createLogger();
 
 const store = createStore(
   rootReducer,
   // APPLY REDUX LOGGER WHEN IN DEVELOPMENT BUILD
-  applyMiddleware(thunkMiddleware, logger)
+  applyMiddleware(thunkMiddleware)
 );
 
 ReactDOM.render(
